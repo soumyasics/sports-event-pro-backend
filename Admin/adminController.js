@@ -37,8 +37,17 @@ const adminpassword = async (req, res) => {
                 email:'admin@gmail.com',
                 password:req.body.password
             }).exec().then(data=>{
-                console.log("updated");
+                return res.json({
+                    status: 200,
+                    msg: "password changed successfully",
+                    data: data
+                });
             }).catch(err=>{
+                return res.json({
+                    status: 500,
+                    msg: "Data not Inserted",
+                    data: err
+                });
                 console.log("nt",err);
             })
         }
