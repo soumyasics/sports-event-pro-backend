@@ -43,15 +43,13 @@ const adminpassword = async (req, res) => {
                     msg: "password changed successfully",
                     data: data
                 });
-                
-
             }).catch(err=>{
                 return res.json({
                     status: 500,
                     msg: "Data not Inserted",
                     data: err
                 });
-
+                console.log("nt",err);
             })
         }
     }
