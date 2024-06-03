@@ -33,6 +33,7 @@ const adminpassword = async (req, res) => {
 
         }
         else{
+            
             Admin.updateOne({
                 email:'admin@gmail.com',
                 password:req.body.password
