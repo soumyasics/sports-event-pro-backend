@@ -1,37 +1,41 @@
-const  Organizer= require('./OrganizerSchema');
+const Organizer = require('./OrganizerSchema');
 const secret = 'Organizer'; // Replace this with your own secret key
 const jwt = require('jsonwebtoken')
 const multer = require("multer");
 
 
 const storage = multer.diskStorage({
-  destination: function (req, res, cb) {
-    cb(null, "./upload");
-  },
-  filename: function (req, file, cb) {
-    const uniquePrefix = 'prefix-'; 
-    const originalname = file.originalname;
-    const extension = originalname.split('.').pop();
-    const filename = uniquePrefix + originalname.substring(0, originalname.lastIndexOf('.')) + '-' + Date.now() + '.' + extension;
-    cb(null, filename);
-  },
+    destination: function (req, res, cb) {
+        cb(null, "./upload");
+    },
+    filename: function (req, file, cb) {
+        const uniquePrefix = 'prefix-';
+        const originalname = file.originalname;
+        const extension = originalname.split('.').pop();
+        const filename = uniquePrefix + originalname.substring(0, originalname.lastIndexOf('.')) + '-' + Date.now() + '.' + extension;
+        cb(null, filename);
+    },
 });
 const upload = multer({ storage: storage }).array("files", 2);
 
 const registerOrganizer = async (req, res) => {
     try {
-        const { name, contact, email, password, district, experience, teamName } = req.body;
+        const { name, address, pincode, city, state, country, contact, email, experience, password } = req.body;
 
         const newOrganizer = new Organizer({
             name,
-            district,
+            address,
+            pincode,
+            city,
+            state,
+            country,
             contact,
             email,
             experience,
             password,
-            teamName,
-            profilePic: req.files[1],
-            certificate: req.files[0]
+            organizerlicense: req.files[1],
+            photo: req.files[0]
+            
 
         });
 
@@ -60,7 +64,7 @@ const registerOrganizer = async (req, res) => {
                 });
             })
             .catch(err => {
-               console.log(err);
+                console.log(err);
                 return res.json({
                     status: 500,
                     msg: "Data not Inserted",
@@ -74,32 +78,33 @@ const registerOrganizer = async (req, res) => {
 
 
 // View all Organizers
-const viewOrganizers = (req, res) => {
-    Organizer.find({isActive:'active'})
-        .exec()
-        .then(data => {
-            if (data.length > 0) {
-                res.json({
-                    status: 200,
-                    msg: "Data obtained successfully",
-                    data: data
-                });
-            } else {
-                res.json({
-                    status: 200,
-                    msg: "No Data obtained"
-                });
-            }
-        })
-        .catch(err => {
-            res.status(500).json({
-                status: 500,
-                msg: "Data not obtained",
-                Error: err
-            });
-        });
-};
+// const viewOrganizers = (req, res) => {
+//     Organizer.find({ isActive: 'active' })
+//         .exec()
+//         .then(data => {
+//             if (data.length > 0) {
+//                 res.json({
+//                     status: 200,
+//                     msg: "Data obtained successfully",
+//                     data: data
+//                 });
+//             } else {
+//                 res.json({
+//                     status: 200,
+//                     msg: "No Data obtained"
+//                 });
+//             }
+//         })
+//         .catch(err => {
+//             res.status(500).json({
+//                 status: 500,
+//                 msg: "Data not obtained",
+//                 Error: err
+//             });
+//         });
+// };
 
 module.exports = {
     registerOrganizer,
+    upload
 };

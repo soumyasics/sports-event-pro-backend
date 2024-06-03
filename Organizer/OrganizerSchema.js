@@ -44,10 +44,6 @@ const OrganizerSchema=mongoose.Schema({
         type:String,
         required:true
     },
-    organizerlicense:{
-        type:Object,
-        required:true
-    },
     experience:{
         type:String,
         required:true
@@ -58,6 +54,16 @@ const OrganizerSchema=mongoose.Schema({
         required:true
 
     },
+    photo:{
+        type:Object,
+        required:true
+
+    },
+    organizerlicense:{
+        type:Object,
+        required:true
+    },
+
     isActive:{
         type:String,
     default:'pending'
