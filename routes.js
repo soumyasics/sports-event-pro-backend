@@ -2,7 +2,8 @@ const express = require("express");
 const router = express.Router();
 const Tc = require("./TeamCoach/teamCoachController");
 const Enquiry =require("./Enquiry/enquiryController");
-const Reset=require("./ResetPasswordAdmin/resetControllers")
+const Admin=require("./Admin/adminController")
+const Organizer=require("./Organizer/OrganizerController")
 //team coach routes
 router.post('/registerTeamCoach',Tc.upload,Tc.registerTeamCoach)
 router.post('/loginTeamCoach',Tc.login)
@@ -16,11 +17,12 @@ router.post('/rejectTeamCoachById/:id',Tc.rejectTeamCoachById)
 //Enquiry routes
 router.post('/addEnquiry',Enquiry.addEnquiry);
 // router.post('/viewEnquiryById',Enquiry.viewEnquiryById);
+router.post('/addEnquiry',Organizer.addEnquiry);
 
 
 //admin
-router.post('/adminresetpassword',Reset.adminresetpassword);
 
+router.post('/adminpassword',Admin.adminpassword);
 
 
 module.exports=router
