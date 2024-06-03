@@ -3,6 +3,7 @@ const router = express.Router();
 const Tc = require("./TeamCoach/teamCoachController");
 const Enquiry =require("./Enquiry/enquiryController");
 const Admin=require("./Admin/adminController")
+const Viewers=require("./Viewers/viewerController")
 //team coach routes
 router.post('/registerTeamCoach',Tc.upload,Tc.registerTeamCoach)
 router.post('/loginTeamCoach',Tc.login)
@@ -17,6 +18,8 @@ router.post('/rejectTeamCoachById/:id',Tc.rejectTeamCoachById)
 router.post('/addEnquiry',Enquiry.addEnquiry);
 // router.post('/viewEnquiryById',Enquiry.viewEnquiryById);
 router.post('/adminpassword',Admin.adminpassword);
+router.post('/Viewerreg',Viewers.Viewerreg);
+
 
 
 module.exports=router
