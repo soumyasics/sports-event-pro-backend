@@ -1,6 +1,6 @@
 const mongoose= require("mongoose");
 
-const Enquirycshema=mongoose.Schema({
+const Enquiryschema=mongoose.Schema({
     name:{
         type:String,
        
@@ -10,23 +10,24 @@ const Enquirycshema=mongoose.Schema({
     
     email:{
         type:String,
-        unique:true,
 
         required:true,
        
     },
     contactnumber:{
         type:String,
-        unique:true,
         required:true,
        
     },
    
-    description:{
+    message:{
         type:String,
         required:true
     },
-   
+   Enquirytype:{
+    type:String,
+
+   }
 
 
 });
@@ -43,5 +44,5 @@ const Enquirycshema=mongoose.Schema({
 
 
 
-module.exports=mongoose.model('Enquiry',Enquirycshema)
+module.exports=mongoose.model('Enquiry',Enquiryschema)
 
