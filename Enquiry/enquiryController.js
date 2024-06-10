@@ -1,37 +1,22 @@
 const Enquiry = require('./enquirySchema');
-const secret = 'Enquiry'; // Replace this with your own secret key
+const secret = 'Enquiry'; 
 const jwt = require('jsonwebtoken')
 const multer = require("multer");
 
 
 const addEnquiry = async (req, res) => {
     try {
-        const {name , email, contactnumber, description } = req.body;
+        const {name , email, contactnumber,  message , Enquirytype} = req.body;
 
         const newEnquiry = new Enquiry({
             name,
             email,
             contactnumber,
-            description,
+             message,
+             Enquirytype
 
         });
 
-        let existingEnquiry1 = await Enquiry.findOne({ contactnumber });
-        if (existingEnquiry1) {
-            return res.json({
-                status: 409,
-                msg: "contactnumber is Already Registered With Us !!",
-                data: null
-            });
-        }
-        let existingEnquiry = await Enquiry.findOne({ email });
-        if (existingEnquiry) {
-            return res.json({
-                status: 409,
-                msg: "Email Already Registered With Us !!",
-                data: null
-            });
-        }
         await newEnquiry.save()
             .then(data => {
                 return res.json({
