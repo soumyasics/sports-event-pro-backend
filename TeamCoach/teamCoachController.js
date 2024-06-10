@@ -20,14 +20,30 @@ const upload = multer({ storage: storage }).array("files", 2);
 
 const registerTeamCoach = async (req, res) => {
     try {
-        const { name, contact, email, password, district, experience, teamName } = req.body;
+        const {  name,
+            state,
+            contact,
+            address,
+            city,
+            country,
+            email,
+            experience,
+            category,
+            totalteammembers,
+            password,
+            teamName } = req.body;
 
         const newTeamCoach = new TeamCoach({
             name,
-            district,
+            state,
             contact,
+            address,
+            city,
+            country,
             email,
             experience,
+            category,
+            totalteammembers,
             password,
             teamName,
             profilePic: req.files[1],
@@ -103,7 +119,7 @@ const viewTeamCoachs = (req, res) => {
 // Update TeamCoach by ID
 const editTeamCoachById = async (req, res) => {
     let flag = 0
-    const { name, contact, email, password, district, experience, teamName } = req.body;
+    const { name, contact, email, password, state, experience, teamName } = req.body;
     let existingTeamCoach = await TeamCoach.find({ contact });
     let TeamCoachData = await TeamCoach.findById({ _id: req.params.id });
     await existingTeamCoach.map(x => {
@@ -117,10 +133,15 @@ const editTeamCoachById = async (req, res) => {
 
         await TeamCoach.findByIdAndUpdate({ _id: req.params.id }, {
             name,
-            district,
+            state,
             contact,
+            address,
+            city,
+            country,
             email,
             experience,
+            category,
+            totalteammembers,
             password,
             teamName
           

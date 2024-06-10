@@ -21,7 +21,21 @@ const tcSchema=mongoose.Schema({
        
         dropDups: true
     },
-   
+    address:{
+        type:String,
+        required:true,
+
+    },
+    city:{
+        type:String,
+        required:true,
+
+    },
+    country:{
+        type:String,
+        required:true,
+
+    },
     password:{
         type:String,
         required:true
@@ -32,11 +46,22 @@ const tcSchema=mongoose.Schema({
         required:true
 
     },
-    district:{
+    state:{
+        type:String,
+        required:true
+
+    }, 
+       category:{
         type:String,
         required:true
 
     },
+    totalteammembers:{
+        type:String,
+        required:true
+
+    },
+
     teamName:{
         type:String,
         required:true
