@@ -6,14 +6,14 @@ const multer = require("multer");
 
 const addEnquiry = async (req, res) => {
     try {
-        const {name , email, contactnumber,  message , Enquirytype} = req.body;
+        const {name , email, contactnumber,  message , enquiriestype} = req.body;
 
         const newEnquiry = new Enquiry({
             name,
             email,
             contactnumber,
              message,
-             Enquirytype
+             enquiriestype
 
         });
 
