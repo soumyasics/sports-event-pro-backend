@@ -24,7 +24,7 @@ const Enquiryschema=mongoose.Schema({
         type:String,
         required:true
     },
-   Enquirytype:{
+    enquiriestype:{
     type:String,
 
    }
