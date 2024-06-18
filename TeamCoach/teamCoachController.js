@@ -19,6 +19,7 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage }).array("files", 2);
 
 const registerTeamCoach = async (req, res) => {
+    console.log("dadta",req.files,"data",req.body);
     try {
         const {  name,
             state,
@@ -50,7 +51,7 @@ const registerTeamCoach = async (req, res) => {
             certificate: req.files[0]
 
         });
-
+console.log("req",req.files);
         let existingTeamCoach1 = await TeamCoach.findOne({ contact });
         if (existingTeamCoach1) {
             return res.json({
