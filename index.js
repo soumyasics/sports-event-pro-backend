@@ -12,5 +12,5 @@ const route=require('./routes')
 app.use('/sports_event_pro_api',route)
 
 app.listen(4038,()=>{
-    console.log("Server created successfully at 4042");
+    console.log("Server created successfully at 4038");
 })

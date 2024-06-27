@@ -75,8 +75,12 @@ const tcSchema=mongoose.Schema({
         required:true
     },
     isActive:{
-        type:String,
-    default:'pending'
+        type:Boolean,
+        default:false
+    },
+    adminApproved:{
+        type:Boolean,
+        default:false
     }
    
 });
