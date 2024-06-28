@@ -49,7 +49,6 @@ const adminpassword = async (req, res) => {
                     msg: "Data not Inserted",
                     data: err
                 });
-                console.log("nt",err);
             })
         }
     }
