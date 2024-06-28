@@ -108,7 +108,7 @@ console.log("req",req.files);
 
 // View all TeamCoachs
 const viewTeamCoachs = (req, res) => {
-    TeamCoach.find({isActive:'active'})
+    TeamCoach.find({})
         .exec()
         .then(data => {
             if (data.length > 0) {
@@ -209,7 +209,7 @@ const viewTeamCoachById = (req, res) => {
 };
 // View TeamCoaches for approval
 const viewTeamCoachReqsByAdmin = (req, res) => {
-    TeamCoach.find({isActive: false })
+    TeamCoach.find({adminApproved: false })
         .exec()
         .then(data => {
             res.json({
