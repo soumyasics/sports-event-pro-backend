@@ -61,11 +61,13 @@ const tcSchema=mongoose.Schema({
         required:true
 
     },
-
+    pincode:{
+        type:String,
+        required:true
+    },
     teamName:{
         type:String,
         required:true
-
     },
     pincode:{
         type:String,
