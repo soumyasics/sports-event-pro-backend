@@ -4,22 +4,37 @@ const jwt = require('jsonwebtoken')
 const multer = require("multer");
 
 
-const storage = multer.diskStorage({
-  destination: function (req, res, cb) {
-    cb(null, "./upload");
-  },
-  filename: function (req, file, cb) {
-    const uniquePrefix = 'prefix-'; 
-    const originalname = file.originalname;
-    const extension = originalname.split('.').pop();
-    const filename = uniquePrefix + originalname.substring(0, originalname.lastIndexOf('.')) + '-' + Date.now() + '.' + extension;
-    cb(null, filename);
-  },
-});
-const upload = multer({ storage: storage }).array("files", 2);
+// const storage = multer.diskStorage({
+//   destination: function (req, res, cb) {
+//     cb(null, "./upload");
+//   },
+//   filename: function (req, file, cb) {
+//     const uniquePrefix = 'prefix-'; 
+//     const originalname = file.originalname;
+//     const extension = originalname.split('.').pop();
+//     const filename = uniquePrefix + originalname.substring(0, originalname.lastIndexOf('.')) + '-' + Date.now() + '.' + extension;
+//     cb(null, filename);
+//   },
+// });
+// const upload = multer({ storage: storage }).array("files");
 
+
+
+const storage = multer.diskStorage({
+    destination: function (req, res, cb) {
+      cb(null, "./upload");
+    },
+    filename: function (req, file, cb) {
+      const uniquePrefix = 'prefix-'; // Add your desired prefix here
+      const originalname = file.originalname;
+      const extension = originalname.split('.').pop();
+      const filename = uniquePrefix + originalname.substring(0, originalname.lastIndexOf('.')) + '-' + Date.now() + '.' + extension;
+      cb(null, filename);
+    },
+  });
+  const upload = multer({ storage: storage }).array("files",2);
 const registerTeamCoach = async (req, res) => {
-    console.log("dadta",req.files,"data",req.body);
+
     try {
         const {  name,
             state,
@@ -32,6 +47,7 @@ const registerTeamCoach = async (req, res) => {
             category,
             totalteammembers,
             password,
+            pincode,
             teamName } = req.body;
 
         const newTeamCoach = new TeamCoach({
@@ -46,6 +62,7 @@ const registerTeamCoach = async (req, res) => {
             category,
             totalteammembers,
             password,
+            pincode,
             teamName,
             profilePic: req.files[1],
             certificate: req.files[0]
@@ -54,6 +71,7 @@ const registerTeamCoach = async (req, res) => {
 console.log("req",req.files);
         let existingTeamCoach1 = await TeamCoach.findOne({ contact });
         if (existingTeamCoach1) {
+            console.log("ex",existingTeamCoach1);
             return res.json({
                 status: 409,
                 msg: "Contact Number Already Registered With Us !!",
@@ -92,7 +110,7 @@ console.log("req",req.files);
 
 // View all TeamCoachs
 const viewTeamCoachs = (req, res) => {
-    TeamCoach.find({isActive:'active'})
+    TeamCoach.find({})
         .exec()
         .then(data => {
             if (data.length > 0) {
@@ -144,7 +162,8 @@ const editTeamCoachById = async (req, res) => {
             category,
             totalteammembers,
             password,
-            teamName
+            teamName,
+            pincode
           
 
         })
@@ -193,7 +212,7 @@ const viewTeamCoachById = (req, res) => {
 };
 // View TeamCoaches for approval
 const viewTeamCoachReqsByAdmin = (req, res) => {
-    TeamCoach.find({isActive: 'pending' })
+    TeamCoach.find({adminApproved: false })
         .exec()
         .then(data => {
             res.json({
@@ -231,7 +250,7 @@ const deleteTeamCoachById = (req, res) => {
 };
 // Accept TeamCoach by ID
 const approveTeamCoachById = (req, res) => {
-    TeamCoach.findByIdAndUpdate({ _id: req.params.id },{isActive:'active'})
+    TeamCoach.findByIdAndUpdate({ _id: req.params.id },{isActive:true,adminApproved:true})
         .exec()
         .then(data => {
             res.json({
@@ -251,12 +270,12 @@ const approveTeamCoachById = (req, res) => {
 
 // Reject TeamCoach by ID
 const rejectTeamCoachById = (req, res) => {
-    TeamCoach.findByIdAndUpdate({ _id: req.params.id },{isActive:'rejected'})
+    TeamCoach.findByIdAndDelete({ _id: req.params.id })
         .exec()
         .then(data => {
             res.json({
                 status: 200,
-                msg: "Data updated successfully",
+                msg: "Data removed successfully",
                 data: data
             });
         })

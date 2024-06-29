@@ -67,6 +67,11 @@ const tcSchema=mongoose.Schema({
         required:true
 
     },
+    pincode:{
+        type:String,
+        required:true
+
+    },
     profilePic:{
         type:Object,
     },
@@ -75,8 +80,12 @@ const tcSchema=mongoose.Schema({
         required:true
     },
     isActive:{
-        type:String,
-    default:'pending'
+        type:Boolean,
+        default:false
+    },
+    adminApproved:{
+        type:Boolean,
+        default:false
     }
    
 });
