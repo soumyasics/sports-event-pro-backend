@@ -42,13 +42,13 @@ const registerTeamCoach = async (req, res) => {
             address,
             pincode,
             city,
-            country,
+            
             email,
             experience,
             category,
             totalteammembers,
             password,
-            pincode,
+           
             teamName } = req.body;
 
         const newTeamCoach = new TeamCoach({
@@ -58,7 +58,7 @@ const registerTeamCoach = async (req, res) => {
             address,
             pincode,
             city,
-            country,
+            country:'India',
             email,
             experience,
             category,
@@ -66,8 +66,8 @@ const registerTeamCoach = async (req, res) => {
             password,
             pincode,
             teamName,
-            profilePic: req.files[1],
-            certificate: req.files[0]
+            certificate: req.files[1],
+            profilePic: req.files[0]
 
         });
 console.log("req",req.files);
@@ -112,7 +112,7 @@ console.log("req",req.files);
 
 // View all TeamCoachs
 const viewTeamCoachs = (req, res) => {
-    TeamCoach.find({})
+    TeamCoach.find({adminApproved:true})
         .exec()
         .then(data => {
             if (data.length > 0) {
@@ -251,6 +251,8 @@ const deleteTeamCoachById = (req, res) => {
             });
         });
 };
+
+
 // Accept TeamCoach by ID
 const approveTeamCoachById = (req, res) => {
     TeamCoach.findByIdAndUpdate({ _id: req.params.id },{isActive:true,adminApproved:true})
@@ -271,6 +273,45 @@ const approveTeamCoachById = (req, res) => {
         });
 };
 
+// Accept TeamCoach by ID
+const activateTeamCoachById = (req, res) => {
+    TeamCoach.findByIdAndUpdate({ _id: req.params.id },{isActive:true})
+        .exec()
+        .then(data => {
+            res.json({
+                status: 200,
+                msg: "Data updated successfully",
+                data: data
+            });
+        })
+        .catch(err => {
+            res.status(500).json({
+                status: 500,
+                msg: "No Data obtained",
+                Error: err
+            });
+        });
+};
+
+// Accept TeamCoach by ID
+const deActivateTeamCoachById = (req, res) => {
+    TeamCoach.findByIdAndUpdate({ _id: req.params.id },{isActive:false})
+        .exec()
+        .then(data => {
+            res.json({
+                status: 200,
+                msg: "Data updated successfully",
+                data: data
+            });
+        })
+        .catch(err => {
+            res.status(500).json({
+                status: 500,
+                msg: "No Data obtained",
+                Error: err
+            });
+        });
+};
 // Reject TeamCoach by ID
 const rejectTeamCoachById = (req, res) => {
     TeamCoach.findByIdAndDelete({ _id: req.params.id })
@@ -439,5 +480,7 @@ module.exports = {
     upload,
     viewTeamCoachReqsByAdmin,
     approveTeamCoachById,
-    rejectTeamCoachById
+    rejectTeamCoachById,
+    deActivateTeamCoachById,
+    activateTeamCoachById
 };
