@@ -22,7 +22,7 @@ router.post('/deActivateTeamCoachById/:id',Tc.deActivateTeamCoachById)
 //Enquiry routes
 router.post('/addEnquiry',Enquiry.addEnquiry);
 
-
+  
 
 // router.post('/viewEnquiryById',Enquiry.viewEnquiryById);
 router.post('/registerOrganizer',Organizer.upload,Organizer.registerOrganizer);
