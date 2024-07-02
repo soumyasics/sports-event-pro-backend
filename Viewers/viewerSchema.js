@@ -54,6 +54,10 @@ const vSchema=mongoose.Schema({
     password:{
         type:String,
         required:true
+    },
+    isActive:{
+        type:Boolean,
+        default:true
     }
 });
 module.exports=mongoose.model('viewers',vSchema)

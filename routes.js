@@ -5,6 +5,9 @@ const Enquiry =require("./Enquiry/enquiryController");
 const Admin=require("./Admin/adminController")
 const viewers=require("./Viewers/viewerController")
 const Organizer=require("./Organizer/OrganizerController")
+
+
+
 //team coach routes
 router.post('/registerTeamCoach',Tc.upload,Tc.registerTeamCoach)
 router.post('/loginTeamCoach',Tc.login)
@@ -44,7 +47,11 @@ router.post('/viewOrganizers',Organizer.viewOrganizers);
 //admin
 
 router.post('/adminpassword',Admin.adminpassword);
+
+
+
 router.post('/Viewerreg',viewers.Viewerreg);
+router.post('/viewerLogin',viewers.login);
 
 
 
