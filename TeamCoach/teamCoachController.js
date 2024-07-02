@@ -425,7 +425,16 @@ const login = (req, res) => {
         if (user.password != password) {
             return res.json({ status: 405, msg: 'Password Mismatch !!' });
         }
+        if(user.adminApproved==false)
+            {
+                return res.json({ status:409,msg: 'Please wait for Admin Approval !!' });
 
+            }
+            if(!user.isActive)
+                {
+                    return res.json({ status:409,msg: 'Your Account is Currently Deactivated By Admin !!' });
+
+                }
 
         const token = createToken(user);
 
