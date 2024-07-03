@@ -32,7 +32,8 @@ const registerTeamCoach = async (req, res) => {
             category,
             totalteammembers,
             password,
-            teamName } = req.body;
+            teamName,
+            pincode } = req.body;
 
         const newTeamCoach = new TeamCoach({
             name,
@@ -47,6 +48,7 @@ const registerTeamCoach = async (req, res) => {
             totalteammembers,
             password,
             teamName,
+            pincode,
             profilePic: req.files[1],
             certificate: req.files[0]
 

@@ -17,7 +17,10 @@ router.post('/approveTeamCoachById/:id',Tc.approveTeamCoachById)
 router.post('/rejectTeamCoachById/:id',Tc.rejectTeamCoachById)
 //Enquiry routes
 router.post('/addEnquiry',Enquiry.addEnquiry);
-// router.post('/viewEnquiryById',Enquiry.viewEnquiryById);
+router.post('/viewEnquiryById/:id',Enquiry.viewEnquiryById);
+router.post('/viewallEnquiries',Enquiry.viewallEnquiries);
+router.post('/deleteEnquiryById/:id',Enquiry.deleteEnquiryById);
+
 router.post('/registerOrganizer',Organizer.upload,Organizer.registerOrganizer);
 
 

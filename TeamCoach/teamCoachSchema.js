@@ -67,6 +67,11 @@ const tcSchema=mongoose.Schema({
         required:true
 
     },
+    pincode:{
+        type:String,
+        required:true
+
+    },
     profilePic:{
         type:Object,
     },
