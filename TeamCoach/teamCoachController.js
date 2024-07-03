@@ -4,34 +4,51 @@ const jwt = require('jsonwebtoken')
 const multer = require("multer");
 
 
-const storage = multer.diskStorage({
-  destination: function (req, res, cb) {
-    cb(null, "./upload");
-  },
-  filename: function (req, file, cb) {
-    const uniquePrefix = 'prefix-'; 
-    const originalname = file.originalname;
-    const extension = originalname.split('.').pop();
-    const filename = uniquePrefix + originalname.substring(0, originalname.lastIndexOf('.')) + '-' + Date.now() + '.' + extension;
-    cb(null, filename);
-  },
-});
-const upload = multer({ storage: storage }).array("files", 2);
+// const storage = multer.diskStorage({
+//   destination: function (req, res, cb) {
+//     cb(null, "./upload");
+//   },
+//   filename: function (req, file, cb) {
+//     const uniquePrefix = 'prefix-'; 
+//     const originalname = file.originalname;
+//     const extension = originalname.split('.').pop();
+//     const filename = uniquePrefix + originalname.substring(0, originalname.lastIndexOf('.')) + '-' + Date.now() + '.' + extension;
+//     cb(null, filename);
+//   },
+// });
+// const upload = multer({ storage: storage }).array("files");
 
+
+
+const storage = multer.diskStorage({
+    destination: function (req, res, cb) {
+      cb(null, "./upload");
+    },
+    filename: function (req, file, cb) {
+      const uniquePrefix = 'prefix-'; // Add your desired prefix here
+      const originalname = file.originalname;
+      const extension = originalname.split('.').pop();
+      const filename = uniquePrefix + originalname.substring(0, originalname.lastIndexOf('.')) + '-' + Date.now() + '.' + extension;
+      cb(null, filename);
+    },
+  });
+  const upload = multer({ storage: storage }).array("files",2);
 const registerTeamCoach = async (req, res) => {
-    console.log("dadta",req.files,"data",req.body);
+
     try {
         const {  name,
             state,
             contact,
             address,
+            pincode,
             city,
-            country,
+            
             email,
             experience,
             category,
             totalteammembers,
             password,
+           
             teamName,
             pincode } = req.body;
 
@@ -40,22 +57,24 @@ const registerTeamCoach = async (req, res) => {
             state,
             contact,
             address,
+            pincode,
             city,
-            country,
+            country:'India',
             email,
             experience,
             category,
             totalteammembers,
             password,
-            teamName,
             pincode,
-            profilePic: req.files[1],
-            certificate: req.files[0]
+            teamName,
+            certificate: req.files[1],
+            profilePic: req.files[0]
 
         });
 console.log("req",req.files);
         let existingTeamCoach1 = await TeamCoach.findOne({ contact });
         if (existingTeamCoach1) {
+            console.log("ex",existingTeamCoach1);
             return res.json({
                 status: 409,
                 msg: "Contact Number Already Registered With Us !!",
@@ -94,7 +113,7 @@ console.log("req",req.files);
 
 // View all TeamCoachs
 const viewTeamCoachs = (req, res) => {
-    TeamCoach.find({isActive:'active'})
+    TeamCoach.find({adminApproved:true})
         .exec()
         .then(data => {
             if (data.length > 0) {
@@ -139,6 +158,7 @@ const editTeamCoachById = async (req, res) => {
             state,
             contact,
             address,
+            pincode,
             city,
             country,
             email,
@@ -146,7 +166,8 @@ const editTeamCoachById = async (req, res) => {
             category,
             totalteammembers,
             password,
-            teamName
+            teamName,
+            pincode
           
 
         })
@@ -195,7 +216,7 @@ const viewTeamCoachById = (req, res) => {
 };
 // View TeamCoaches for approval
 const viewTeamCoachReqsByAdmin = (req, res) => {
-    TeamCoach.find({isActive: 'pending' })
+    TeamCoach.find({adminApproved: false })
         .exec()
         .then(data => {
             res.json({
@@ -231,9 +252,11 @@ const deleteTeamCoachById = (req, res) => {
             });
         });
 };
+
+
 // Accept TeamCoach by ID
 const approveTeamCoachById = (req, res) => {
-    TeamCoach.findByIdAndUpdate({ _id: req.params.id },{isActive:'active'})
+    TeamCoach.findByIdAndUpdate({ _id: req.params.id },{isActive:true,adminApproved:true})
         .exec()
         .then(data => {
             res.json({
@@ -251,14 +274,53 @@ const approveTeamCoachById = (req, res) => {
         });
 };
 
-// Reject TeamCoach by ID
-const rejectTeamCoachById = (req, res) => {
-    TeamCoach.findByIdAndUpdate({ _id: req.params.id },{isActive:'rejected'})
+// Accept TeamCoach by ID
+const activateTeamCoachById = (req, res) => {
+    TeamCoach.findByIdAndUpdate({ _id: req.params.id },{isActive:true})
         .exec()
         .then(data => {
             res.json({
                 status: 200,
                 msg: "Data updated successfully",
+                data: data
+            });
+        })
+        .catch(err => {
+            res.status(500).json({
+                status: 500,
+                msg: "No Data obtained",
+                Error: err
+            });
+        });
+};
+
+// Accept TeamCoach by ID
+const deActivateTeamCoachById = (req, res) => {
+    TeamCoach.findByIdAndUpdate({ _id: req.params.id },{isActive:false})
+        .exec()
+        .then(data => {
+            res.json({
+                status: 200,
+                msg: "Data updated successfully",
+                data: data
+            });
+        })
+        .catch(err => {
+            res.status(500).json({
+                status: 500,
+                msg: "No Data obtained",
+                Error: err
+            });
+        });
+};
+// Reject TeamCoach by ID
+const rejectTeamCoachById = (req, res) => {
+    TeamCoach.findByIdAndDelete({ _id: req.params.id })
+        .exec()
+        .then(data => {
+            res.json({
+                status: 200,
+                msg: "Data removed successfully",
                 data: data
             });
         })
@@ -364,7 +426,16 @@ const login = (req, res) => {
         if (user.password != password) {
             return res.json({ status: 405, msg: 'Password Mismatch !!' });
         }
+        if(user.adminApproved==false)
+            {
+                return res.json({ status:409,msg: 'Please wait for Admin Approval !!' });
 
+            }
+            if(!user.isActive)
+                {
+                    return res.json({ status:409,msg: 'Your Account is Currently Deactivated By Admin !!' });
+
+                }
 
         const token = createToken(user);
 
@@ -419,5 +490,7 @@ module.exports = {
     upload,
     viewTeamCoachReqsByAdmin,
     approveTeamCoachById,
-    rejectTeamCoachById
+    rejectTeamCoachById,
+    deActivateTeamCoachById,
+    activateTeamCoachById
 };
