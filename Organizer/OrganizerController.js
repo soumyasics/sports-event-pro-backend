@@ -414,7 +414,7 @@ const login = (req, res) => {
 
         if (!user.adminApproved) {
             return res.json({ status: 405, msg: 'Please wait for Admin Approval !!' });
-        }        if (!user.isAcxtive) {
+        }        if (!user.isActive) {
             return res.json({ status: 405, msg: 'You are currently deactivated By Admin !!' });
         }
         const token = createToken(user);

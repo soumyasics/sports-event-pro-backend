@@ -47,6 +47,7 @@ router.post('/viewOrganizers',Organizer.viewOrganizers);
 //admin
 
 router.post('/adminpassword',Admin.adminpassword);
+router.post('/adminLogin',Admin.login);
 
 
 
