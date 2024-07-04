@@ -20,6 +20,7 @@ router.post('/approveTeamCoachById/:id',Tc.approveTeamCoachById)
 router.post('/rejectTeamCoachById/:id',Tc.rejectTeamCoachById)
 router.post('/activateTeamCoachById/:id',Tc.activateTeamCoachById)
 router.post('/deActivateTeamCoachById/:id',Tc.deActivateTeamCoachById)
+router.post('/forgotPassword',Tc.forgotPassword)
 
 
 //Enquiry routes
