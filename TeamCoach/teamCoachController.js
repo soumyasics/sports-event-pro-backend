@@ -32,6 +32,8 @@ const storage = multer.diskStorage({
       cb(null, filename);
     },
   });
+  const uploadOne = multer({ storage: storage }).single('profilePic');
+
   const upload = multer({ storage: storage }).array("files",2);
 const registerTeamCoach = async (req, res) => {
 
@@ -139,6 +141,7 @@ const viewTeamCoachs = (req, res) => {
 
 // Update TeamCoach by ID
 const editTeamCoachById = async (req, res) => {
+    console.log(req.file);
     let flag = 0
     const { name, contact, email, password, state, experience,city,totalteammembers, teamName,address ,pincode,category} = req.body;
     let existingTeamCoach = await TeamCoach.find({ contact });
@@ -159,7 +162,7 @@ const editTeamCoachById = async (req, res) => {
             address,
             pincode,
             city,
-            
+            profilePic:req.file,
             email,
             experience,
             category,
@@ -178,6 +181,7 @@ const editTeamCoachById = async (req, res) => {
                 });
             })
             .catch(err => {
+                console.log(err);
                 res.status(500).json({
                     status: 500,
                     msg: "Data not Updated",
@@ -485,6 +489,7 @@ module.exports = {
     forgotPassword,
     resetPassword,
     login,
+    uploadOne,
     requireAuth,
     upload,
     viewTeamCoachReqsByAdmin,
