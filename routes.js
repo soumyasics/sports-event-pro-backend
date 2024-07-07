@@ -13,7 +13,7 @@ router.post('/registerTeamCoach',Tc.upload,Tc.registerTeamCoach)
 router.post('/loginTeamCoach',Tc.login)
 router.post('/viewTeamCoachById/:id',Tc.viewTeamCoachById)
 router.post('/viewTeamCoachs',Tc.viewTeamCoachs)
-router.post('/editTeamCoachById/:id',Tc.editTeamCoachById)
+router.post('/editTeamCoachById/:id',Tc.uploadOne,Tc.editTeamCoachById)
 router.post('/deleteTeamCoachById/:id',Tc.deleteTeamCoachById)
 router.post('/viewTeamCoachReqsByAdmin',Tc.viewTeamCoachReqsByAdmin)
 router.post('/approveTeamCoachById/:id',Tc.approveTeamCoachById)
@@ -39,6 +39,8 @@ router.post('/approveOrganizerById/:id',Organizer.approveOrganizerById);
 router.post('/activateOrganizerById/:id',Organizer.activateOrganizerById);
 router.post('/deActivateOrganizerById/:id',Organizer.deActivateOrganizerById);
 router.post('/viewOrganizers',Organizer.viewOrganizers);
+router.post('/forgotPasswordOrganizer',Organizer.forgotPassword);
+
 
 
 
@@ -52,8 +54,16 @@ router.post('/adminLogin',Admin.login);
 
 
 
+//viewers
 router.post('/Viewerreg',viewers.Viewerreg);
 router.post('/viewerLogin',viewers.login);
+router.post('/viewviewerss',viewers.viewviewerss);
+router.post('/viewviewersById/:id',viewers.viewviewersById);
+router.post('/deleteviewersById/:id',viewers.deleteviewersById);
+router.post('/editviewersById/:id',viewers.editviewersById);
+router.post('/activateviewersById/:id',viewers.activateviewersById);
+router.post('/deActivateviewersById/:id',viewers.deActivateviewersById);
+router.post('/forgotPasswordViewer',viewers.forgotPassword);
 
 
 
