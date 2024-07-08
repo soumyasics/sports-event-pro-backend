@@ -1,6 +1,12 @@
 const mongoose=require("mongoose");
 
 const tmSchema=mongoose.Schema({
+    coachId:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:'teamcoaches',
+       
+        required:true,
+    },
     name:{
         type:String,
        
