@@ -1,9 +1,9 @@
 const mongoose=require("mongoose");
 
 const tmSchema=mongoose.Schema({
-    coachId:{
+    organizerId:{
         type:mongoose.Schema.Types.ObjectId,
-        ref:'teamcoaches',
+        ref:'organizers',
        
         required:true,
     },
@@ -13,42 +13,34 @@ const tmSchema=mongoose.Schema({
         required:true,
        
     },
-    contact:{
+    venue:{
         type:String,
         
         required:true,
        
     },
-    email:{
-        type:String,
-        unique:true,
+    date:{
+        type:Date,
+       
         required:true,
        
-        dropDups: true
     },
-    pincode:{
+    time:{
         type:String,
         required:true
-    },
-    country:{
-        type:String,
-        required:true,
     },
     category:{
         type:String,
-        required:true
-    },
-    address:{
-        type:String,
         required:true,
     },
-    city:{
-        type:String,
-        required:true,
-    },
-    state:{
-        type:String,
+  
+    banner:{
+        type:Object,
         required:true
     }, 
+    adminApprved:{
+        type:Boolean,
+        default:false
+    }
 });
-module.exports=mongoose.model('teammembers',tmSchema)
+module.exports=mongoose.model('events',tmSchema)
