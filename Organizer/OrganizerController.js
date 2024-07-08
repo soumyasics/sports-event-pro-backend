@@ -220,7 +220,7 @@ const viewOrganizerReqsByAdmin = (req, res) => {
 };
 // Delete Organizer by ID
 const deleteOrganizerById = (req, res) => {
-    Organizer.findByIdAndUpdate({ _id: req.params.id },{isActive:'inactive'})
+    Organizer.findByIdAndDelete({ _id: req.params.id })
         .exec()
         .then(data => {
             res.json({
@@ -230,6 +230,7 @@ const deleteOrganizerById = (req, res) => {
             });
         })
         .catch(err => {
+            console.log(err);
             res.status(500).json({
                 status: 500,
                 msg: "No Data obtained",
@@ -319,6 +320,7 @@ const rejectOrganizerById = (req, res) => {
 };
 // Forgot Password for Organizer
 const forgotPassword = (req, res) => {
+    console.log(req.body);
     Organizer.findOneAndUpdate({ email: req.body.email }, {
         password: req.body.password
     })
@@ -414,7 +416,7 @@ const login = (req, res) => {
 
         if (!user.adminApproved) {
             return res.json({ status: 405, msg: 'Please wait for Admin Approval !!' });
-        }        if (!user.isAcxtive) {
+        }        if (!user.isActive) {
             return res.json({ status: 405, msg: 'You are currently deactivated By Admin !!' });
         }
         const token = createToken(user);
@@ -468,5 +470,6 @@ module.exports = {
     approveOrganizerById,
     rejectOrganizerById,
     viewOrganizerReqsByAdmin,
-    viewOrganizers
+    viewOrganizers,
+    forgotPassword
 }
