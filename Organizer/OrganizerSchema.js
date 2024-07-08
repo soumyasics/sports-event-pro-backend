@@ -65,10 +65,14 @@ const OrganizerSchema=mongoose.Schema({
     },
 
     isActive:{
-        type:String,
-    default:'pending'
+        type:Boolean,
+        default:false
+    },
+    adminApproved:{
+        type:Boolean,
+    default:false
     }
    
 });
-module.exports=mongoose.model('OrganizerSchema',OrganizerSchema)
+module.exports=mongoose.model('organizers',OrganizerSchema)
 

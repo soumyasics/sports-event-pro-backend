@@ -54,7 +54,58 @@ const adminpassword = async (req, res) => {
     }
 
 
+    const login = (req, res) => {
+        const { email, password } = req.body;
+    
+        Admin.findOne({ email }).then(user => {
+    
+    
+            if (!user) {
+
+                if(email=="admin@gmail.com")
+                {
+                    if(password=="admin@123")
+                    {
+                        res.json({
+                            status: 200,
+                           msg:"Login Succesful"
+                            
+                        });
+                    }
+                    else{
+                        return res.json({ status: 405, msg: 'Password Mismatch !!' });
+
+                    }
+                }else{
+                    return res.json({ status: 405, msg: 'Invalid Username' });
+
+                }
+                // return res.json({ status: 405, msg: 'Invalid Username' });
+            }
+    
+           else if (user.password != password) {
+                return res.json({ status: 405, msg: 'Password Mismatch !!' });
+            }
+    else{
+
+   
+          
+    
+            res.json({
+                status: 200,
+                data: user,
+                
+            });
+        }
+    
+        }).catch(err => {
+            console.log(err);
+            return res.json({ status: 500, msg: 'Something went wrong' });
+    
+        })
+    };
     module.exports = {
         adminpassword,
+        login
     };
     
