@@ -25,6 +25,8 @@ router.post('/forgotPassword',Tc.forgotPassword)
 
 //team members
 router.post('/addTeamMembers',Tm.addTeamMembers)
+router.post('/ViewAllTeamMembers',Tm.ViewAllTeamMembers)
+
 
 
 //Enquiry routes

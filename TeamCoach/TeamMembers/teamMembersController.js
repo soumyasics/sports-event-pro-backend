@@ -72,6 +72,40 @@ console.log("req",req.files);
         res.status(500).json({ message: error.message });
     }
 };
+
+
+// View all TeamMembers
+const ViewAllTeamMembers = (req, res) => {
+    TeamMembers.find()
+        .exec()
+        .then(data => {
+            if (data.length > 0) {
+                res.json({
+                    status: 200,
+                    msg: "Data obtained successfully",
+                    data: data
+                });
+            } else {
+                res.json({
+                    status: 200,
+                    msg: "No Data obtained"
+                });
+            }
+        })
+        .catch(err => {
+            res.status(500).json({
+                status: 500,
+                msg: "Data not obtained",
+                Error: err
+            });
+        });
+};
+
+
+
+
+
 module.exports = {
     addTeamMembers,
+    ViewAllTeamMembers
 };
