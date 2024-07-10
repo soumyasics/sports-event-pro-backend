@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const Tc = require("./TeamCoach/teamCoachController");
+const Tm=require("./TeamCoach/TeamMembers/teamMembersController");
 const Enquiry =require("./Enquiry/enquiryController");
 const Admin=require("./Admin/adminController")
 const viewers=require("./Viewers/viewerController")
@@ -21,6 +22,9 @@ router.post('/rejectTeamCoachById/:id',Tc.rejectTeamCoachById)
 router.post('/activateTeamCoachById/:id',Tc.activateTeamCoachById)
 router.post('/deActivateTeamCoachById/:id',Tc.deActivateTeamCoachById)
 router.post('/forgotPassword',Tc.forgotPassword)
+
+//team members
+router.post('/addTeamMembers',Tm.addTeamMembers)
 
 
 //Enquiry routes
