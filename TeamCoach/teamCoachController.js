@@ -42,7 +42,6 @@ const registerTeamCoach = async (req, res) => {
             state,
             contact,
             address,
-            pincode,
             city,
             
             email,
