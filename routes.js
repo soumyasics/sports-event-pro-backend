@@ -31,7 +31,7 @@ router.post('/addTeamMembers',Tm.addTeamMembers)
 router.post('/addEnquiry',Enquiry.addEnquiry);
 router.post('/viewEnquiryById/:id',Enquiry.viewEnquiryById);
 router.post('/viewallEnquiries',Enquiry.viewallEnquiries);
-router.post('/deleteEnquiryById/:id',Enquiry.deleteEnquiryById);
+router.post('/deleteEnquiryById',Enquiry.deleteEnquiryById);
 
 router.post('/registerOrganizer',Organizer.upload,Organizer.registerOrganizer);
 router.post('/viewOrganizerReqsForAdmin',Organizer.viewOrganizerReqsForAdmin);
