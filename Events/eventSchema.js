@@ -39,8 +39,8 @@ const tmSchema=mongoose.Schema({
         required:true
     }, 
     adminApprved:{
-        type:Boolean,
-        default:false
+        type:String,
+        default:'Pending'
     }
 });
 module.exports=mongoose.model('events',tmSchema)

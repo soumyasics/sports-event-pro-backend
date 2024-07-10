@@ -6,6 +6,7 @@ const Enquiry =require("./Enquiry/enquiryController");
 const Admin=require("./Admin/adminController")
 const viewers=require("./Viewers/viewerController")
 const Organizer=require("./Organizer/OrganizerController")
+const OrgEvents=require("./Events/eventController")
 
 
 
@@ -23,8 +24,7 @@ router.post('/activateTeamCoachById/:id',Tc.activateTeamCoachById)
 router.post('/deActivateTeamCoachById/:id',Tc.deActivateTeamCoachById)
 router.post('/forgotPassword',Tc.forgotPassword)
 
-//team members
-router.post('/addTeamMembers',Tm.addTeamMembers)
+
 
 
 //Enquiry routes
@@ -37,7 +37,7 @@ router.post('/registerOrganizer',Organizer.upload,Organizer.registerOrganizer);
 router.post('/viewOrganizerReqsForAdmin',Organizer.viewOrganizerReqsForAdmin);
 router.post('/loginOrganizer',Organizer.login);
 router.post('/viewOrganizerById/:id',Organizer.viewOrganizerById);
-router.post('/editOrganizerById/:id',Organizer.upload,Organizer.editOrganizerById);
+router.post('/editOrganizerById/:id',Organizer.uploadSingle,Organizer.editOrganizerById);
 router.post('/deleteOrganizerById/:id',Organizer.deleteOrganizerById);
 router.post('/approveOrganizerById/:id',Organizer.approveOrganizerById);
 router.post('/activateOrganizerById/:id',Organizer.activateOrganizerById);
@@ -69,7 +69,18 @@ router.post('/activateviewersById/:id',viewers.activateviewersById);
 router.post('/deActivateviewersById/:id',viewers.deActivateviewersById);
 router.post('/forgotPasswordViewer',viewers.forgotPassword);
 
+//events
+router.post('/addEvent',OrgEvents.upload,OrgEvents.registerEvent);
+router.post('/viewEventByOrganizerId/:id',OrgEvents.viewEventByOrganizerId);
+router.post('/viewEvents',OrgEvents.viewEvents);
+router.post('/rejectEventById/:id',OrgEvents.rejectEventById);
 
+router.post('/approveEventById/:id',OrgEvents.approveEventById);
+
+
+
+//team members
+router.post('/registerTeamMember/:id',Tm.upload,Tm.registerTeamMember)
 
 module.exports=router
 

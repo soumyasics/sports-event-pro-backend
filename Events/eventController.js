@@ -7,7 +7,7 @@ const secret = 'eventsSecretKey'; // Replace this with your own secret key
 // Multer setup for file uploads
 const storage = multer.diskStorage({
   destination: function (req, res, cb) {
-    cb(null, './uploads');
+    cb(null, './upload');
   },
   filename: function (req, file, cb) {
     const uniquePrefix = 'event-'; // Add your desired prefix here
@@ -43,6 +43,7 @@ const registerEvent = async (req, res) => {
         });
       })
       .catch(err => {
+        console.log(err);
         return res.json({
           status: 500,
           msg: 'Data not inserted',
@@ -56,7 +57,7 @@ const registerEvent = async (req, res) => {
 
 // View all events
 const viewEvents = (req, res) => {
-  Event.find()
+  Event.find({adminApprved:'Pending'})
     .exec()
     .then(data => {
       if (data.length > 0) {
@@ -133,6 +134,25 @@ const viewEventById = (req, res) => {
     });
 };
 
+// View event by ID
+const viewEventByOrganizerId = (req, res) => {
+  Event.find({organizerId: req.params.id })
+    .exec()
+    .then(data => {
+      res.json({
+        status: 200,
+        msg: 'Data obtained successfully',
+        data: data,
+      });
+    })
+    .catch(err => {
+      res.status(500).json({
+        status: 500,
+        msg: 'No data obtained',
+        Error: err,
+      });
+    });
+};
 // Delete event by ID
 const deleteEventById = (req, res) => {
   Event.findByIdAndDelete({ _id: req.params.id })
@@ -153,6 +173,45 @@ const deleteEventById = (req, res) => {
     });
 };
 
+
+const approveEventById = (req, res) => {
+  Event.findByIdAndUpdate({ _id: req.params.id },{adminApprved:'Approved'})
+    .exec()
+    .then(data => {
+      res.json({
+        status: 200,
+        msg: 'Updated successfully',
+        data: data,
+      });
+    })
+    .catch(err => {
+      res.status(500).json({
+        status: 500,
+        msg: 'Data not deleted',
+        Error: err,
+      });
+    });
+};
+
+
+const rejectEventById = (req, res) => {
+  Event.findByIdAndUpdate({ _id: req.params.id },{adminApprved:'Rejected'})
+    .exec()
+    .then(data => {
+      res.json({
+        status: 200,
+        msg: 'updated successfully',
+        data: data,
+      });
+    })
+    .catch(err => {
+      res.status(500).json({
+        status: 500,
+        msg: 'Data not deleted',
+        Error: err,
+      });
+    });
+};
 // JWT authentication middleware
 const requireAuth = (req, res, next) => {
   const token = req.headers.authorization.split(' ')[1];
@@ -178,4 +237,7 @@ module.exports = {
   deleteEventById,
   upload,
   requireAuth,
+  viewEventByOrganizerId,
+  approveEventById,
+  rejectEventById
 };
