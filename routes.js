@@ -26,15 +26,16 @@ router.post('/forgotPassword',Tc.forgotPassword)
 //team members
 router.post('/addTeamMembers',Tm.addTeamMembers)
 router.post('/ViewAllTeamMembers',Tm.ViewAllTeamMembers)
+router.post('/editTeamMembersById/:id',Tm.editTeamMembersById)
 
 
 
 //Enquiry routes
 router.post('/addEnquiry',Enquiry.addEnquiry);
+router.post('/viewEnquiryById/:id',Enquiry.viewEnquiryById);
+router.post('/viewallEnquiries',Enquiry.viewallEnquiries);
+router.post('/deleteEnquiryById',Enquiry.deleteEnquiryById);
 
-  
-
-// router.post('/viewEnquiryById',Enquiry.viewEnquiryById);
 router.post('/registerOrganizer',Organizer.upload,Organizer.registerOrganizer);
 router.post('/viewOrganizerReqsForAdmin',Organizer.viewOrganizerReqsForAdmin);
 router.post('/loginOrganizer',Organizer.login);
