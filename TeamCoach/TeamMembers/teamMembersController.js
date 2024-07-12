@@ -76,7 +76,7 @@ console.log("req",req.files);
 
 // View all TeamMembers
 const ViewAllTeamMembers = (req, res) => {
-    TeamMembers.find()
+TeamMembers.find({adminApproved:true})
         .exec()
         .then(data => {
             if (data.length > 0) {
