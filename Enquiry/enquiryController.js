@@ -39,27 +39,72 @@ const addEnquiry = async (req, res) => {
 };
 
 
-// View Enquiry by ID
-// const viewEnquiryById = (req, res) => {
-//     Enquiry.findById({ _id: req.params.id })
-//         .exec()
-//         .then(data => {
-//             res.json({
-//                 status: 200,
-//                 msg: "Data obtained successfully",
-//                 data: data
-//             });
-//         })
-//         .catch(err => {
-//             res.status(500).json({
-//                 status: 500,
-//                 msg: "No Data obtained",
-//                 Error: err
-//             });
-//         });
-// };
+//View Enquiry by ID
+const viewEnquiryById = (req, res) => {
+    Enquiry.findById({ _id: req.params.id })
+        .exec()
+        .then(data => {
+            res.json({
+                status: 200,
+                msg: "Data obtained successfully",
+                data: data
+            });
+        })
+        .catch(err => {
+            res.status(500).json({
+                status: 500,
+                msg: "No Data obtained",
+                Error: err
+            });
+        });
+};
 
+// View all Enquiries
+const viewallEnquiries = (req, res) => {
+    Enquiry.find()
+        .exec()
+        .then(data => {
+            if (data.length > 0) {
+                res.json({
+                    status: 200,
+                    msg: "Data obtained successfully",
+                    data: data
+                });
+            } else {
+                res.json({
+                    status: 200,
+                    msg: "No Data obtained"
+                });
+            }
+        })
+        .catch(err => {
+            res.status(500).json({
+                status: 500,
+                msg: "Data not obtained",
+                Error: err
+            });
+        });
+};
 
+// Delete Enquiry by ID
+const deleteEnquiryById = (req, res) => {
+    Enquiry.deleteOne({ _id: req.params.id })
+        .exec()
+        .then(data => {
+            res.json({
+                status: 200,
+                msg: "Data updated successfully",
+                data: data
+            });
+        })
+        .catch(err => {
+            res.status(500).json({
+                status: 500,
+                msg: "No Data obtained",
+                Error: err
+            });
+        });
+};
 
 
 
@@ -68,7 +113,9 @@ const addEnquiry = async (req, res) => {
 
 module.exports = {
     addEnquiry,
-    // viewEnquiryById
+    viewEnquiryById,
+    viewallEnquiries,
+    deleteEnquiryById,
 };
 
 

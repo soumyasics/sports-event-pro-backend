@@ -102,10 +102,65 @@ TeamMembers.find({adminApproved:true})
 };
 
 
+// Update TeamMembers by ID
+const editTeamMembersById = async (req, res) => {
+    console.log(req.file);
+    let flag = 0
+    const { name, contact, email, state,city,address ,pincode,category} = req.body;
+    let existingTeamMembers = await TeamMembers.find({ contact });
+    let TeamMembersData = await TeamMembers.findById({ _id: req.params.id });
+    await existingTeamMembers.map(x => {
+        if (x.contact != TeamMembersData.contact) {
+            flag = 1
+        }
+
+    })
+
+    if (flag == 0) {
+
+        await TeamMembers.findByIdAndUpdate({ _id: req.params.id }, {
+            name,
+            state,
+            contact,
+            address,
+            pincode,
+            city,
+            profilePic:req.file,
+            email,
+            category,
+            pincode
+          
+
+        })
+            .exec()
+            .then(data => {
+                res.json({
+                    status: 200,
+                    msg: "Updated successfully"
+                });
+            })
+            .catch(err => {
+                console.log(err);
+                res.status(500).json({
+                    status: 500,
+                    msg: "Data not Updated",
+                    Error: err
+                });
+            });
+    }
+    else {
+        return res.json({
+            status: 409,
+            msg: "contact Number Already Registered With Us !!",
+            data: null
+        });
+    }
+};
 
 
 
 module.exports = {
     addTeamMembers,
-    ViewAllTeamMembers
+    ViewAllTeamMembers,
+    // editTeamMembersById
 };

@@ -42,7 +42,6 @@ const registerTeamCoach = async (req, res) => {
             state,
             contact,
             address,
-            pincode,
             city,
             
             email,
@@ -51,7 +50,8 @@ const registerTeamCoach = async (req, res) => {
             totalteammembers,
             password,
            
-            teamName } = req.body;
+            teamName,
+            pincode } = req.body;
 
         const newTeamCoach = new TeamCoach({
             name,
