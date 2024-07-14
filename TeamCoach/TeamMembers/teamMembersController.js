@@ -156,6 +156,26 @@ const viewTeamMemberById = (req, res) => {
         });
 };
 
+const viewTeamMemberByCoachId = (req, res) => {
+    TeamMember.find({ coachId: req.params.id })
+        
+        .exec()
+        .then(data => {
+            res.json({
+                status: 200,
+                msg: "Data obtained successfully",
+                data: data
+            });
+        })
+        .catch(err => {
+            res.status(500).json({
+                status: 500,
+                msg: "No Data obtained",
+                Error: err
+            });
+        });
+};
+
 const deleteTeamMemberById = (req, res) => {
     TeamMember.findByIdAndDelete({ _id: req.params.id })
         .exec()
@@ -227,6 +247,6 @@ module.exports = {
     editTeamMemberById,
     viewTeamMemberById,
     deleteTeamMemberById,
- 
+ viewTeamMemberByCoachId,
     upload
 };

@@ -57,10 +57,12 @@ const registerEvent = async (req, res) => {
 
 // View all events
 const viewEvents = (req, res) => {
+  console.log("api worked");
   Event.find({adminApprved:'Pending'})
     .exec()
     .then(data => {
       if (data.length > 0) {
+        console.log(data);
         res.json({
           status: 200,
           msg: 'Data obtained successfully',
@@ -81,6 +83,37 @@ const viewEvents = (req, res) => {
       });
     });
 };
+
+
+
+// View all approved events
+const viewApprovedEvents = (req, res) => {
+  Event.find({adminApprved:'Approved'}).populate('organizerId')
+    .exec()
+    .then(data => {
+      if (data.length > 0) {
+        console.log(data);
+        res.json({
+          status: 200,
+          msg: 'Data obtained successfully',
+          data: data,
+        });
+      } else {
+        res.json({
+          status: 200,
+          msg: 'No data obtained',
+        });
+      }
+    })
+    .catch(err => {
+      res.status(500).json({
+        status: 500,
+        msg: 'Data not obtained',
+        Error: err,
+      });
+    });
+};
+
 
 // Update event by ID
 const editEventById = async (req, res) => {
@@ -239,5 +272,6 @@ module.exports = {
   requireAuth,
   viewEventByOrganizerId,
   approveEventById,
-  rejectEventById
+  rejectEventById,
+  viewApprovedEvents
 };
