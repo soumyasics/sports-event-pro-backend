@@ -7,7 +7,7 @@ const secret = 'eventsSecretKey'; // Replace this with your own secret key
 // Multer setup for file uploads
 const storage = multer.diskStorage({
   destination: function (req, res, cb) {
-    cb(null, './uploads');
+    cb(null, './upload');
   },
   filename: function (req, file, cb) {
     const uniquePrefix = 'event-'; // Add your desired prefix here
@@ -43,6 +43,7 @@ const registerEvent = async (req, res) => {
         });
       })
       .catch(err => {
+        console.log(err);
         return res.json({
           status: 500,
           msg: 'Data not inserted',
@@ -56,10 +57,12 @@ const registerEvent = async (req, res) => {
 
 // View all events
 const viewEvents = (req, res) => {
-  Event.find()
+  console.log("api worked");
+  Event.find({adminApprved:'Pending'})
     .exec()
     .then(data => {
       if (data.length > 0) {
+        console.log(data);
         res.json({
           status: 200,
           msg: 'Data obtained successfully',
@@ -80,6 +83,37 @@ const viewEvents = (req, res) => {
       });
     });
 };
+
+
+
+// View all approved events
+const viewApprovedEvents = (req, res) => {
+  Event.find({adminApprved:'Approved'}).populate('organizerId')
+    .exec()
+    .then(data => {
+      if (data.length > 0) {
+        console.log(data);
+        res.json({
+          status: 200,
+          msg: 'Data obtained successfully',
+          data: data,
+        });
+      } else {
+        res.json({
+          status: 200,
+          msg: 'No data obtained',
+        });
+      }
+    })
+    .catch(err => {
+      res.status(500).json({
+        status: 500,
+        msg: 'Data not obtained',
+        Error: err,
+      });
+    });
+};
+
 
 // Update event by ID
 const editEventById = async (req, res) => {
@@ -133,6 +167,25 @@ const viewEventById = (req, res) => {
     });
 };
 
+// View event by ID
+const viewEventByOrganizerId = (req, res) => {
+  Event.find({organizerId: req.params.id })
+    .exec()
+    .then(data => {
+      res.json({
+        status: 200,
+        msg: 'Data obtained successfully',
+        data: data,
+      });
+    })
+    .catch(err => {
+      res.status(500).json({
+        status: 500,
+        msg: 'No data obtained',
+        Error: err,
+      });
+    });
+};
 // Delete event by ID
 const deleteEventById = (req, res) => {
   Event.findByIdAndDelete({ _id: req.params.id })
@@ -153,6 +206,45 @@ const deleteEventById = (req, res) => {
     });
 };
 
+
+const approveEventById = (req, res) => {
+  Event.findByIdAndUpdate({ _id: req.params.id },{adminApprved:'Approved'})
+    .exec()
+    .then(data => {
+      res.json({
+        status: 200,
+        msg: 'Updated successfully',
+        data: data,
+      });
+    })
+    .catch(err => {
+      res.status(500).json({
+        status: 500,
+        msg: 'Data not deleted',
+        Error: err,
+      });
+    });
+};
+
+
+const rejectEventById = (req, res) => {
+  Event.findByIdAndUpdate({ _id: req.params.id },{adminApprved:'Rejected'})
+    .exec()
+    .then(data => {
+      res.json({
+        status: 200,
+        msg: 'updated successfully',
+        data: data,
+      });
+    })
+    .catch(err => {
+      res.status(500).json({
+        status: 500,
+        msg: 'Data not deleted',
+        Error: err,
+      });
+    });
+};
 // JWT authentication middleware
 const requireAuth = (req, res, next) => {
   const token = req.headers.authorization.split(' ')[1];
@@ -170,6 +262,39 @@ const requireAuth = (req, res, next) => {
   });
 };
 
+const addRating = (req, res) => {
+  let newRate = parseInt(req.body.rating);
+  let rating = 0;
+  Event.findById({ _id: req.params.id })
+    .exec()
+    .then((data) => {
+      rating = data.rating;
+      if (data.rating != 0) rating = (rating + newRate) / 2;
+      else rating = newRate;
+      Event.findByIdAndUpdate(
+        { _id: req.params.id },
+        {
+          rating: rating,
+        },
+        { new: true }
+      )
+        .exec()
+        .then((data) => {
+          res.json({
+            status: 200,
+            msg: "Data obtained successfully",
+            data: data,
+          });
+        })
+        .catch((err) => {
+          res.json({
+            status: 500,
+            msg: "Data not Inserted",
+            Error: err,
+          });
+        });
+    });
+};
 module.exports = {
   registerEvent,
   viewEvents,
@@ -178,4 +303,9 @@ module.exports = {
   deleteEventById,
   upload,
   requireAuth,
+  viewEventByOrganizerId,
+  approveEventById,
+  rejectEventById,
+  viewApprovedEvents,
+  addRating
 };
