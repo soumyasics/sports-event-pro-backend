@@ -8,6 +8,7 @@ const viewers=require("./Viewers/viewerController")
 const Organizer=require("./Organizer/OrganizerController")
 const OrgEvents=require("./Events/eventController")
 const EventEnrollments=require("./EventEnrollments/enrollmentController")
+const reviews=require("./Reviews/reviewController")
 
 
 
@@ -30,6 +31,8 @@ router.post('/forgotPassword',Tc.forgotPassword)
 
 //Enquiry routes
 router.post('/addEnquiry',Enquiry.addEnquiry);
+router.post('/viewEnquiries',Enquiry.viewEnquiries);
+router.post('/deleteEnquiryById/:id',Enquiry.deleteEnquiryById);
 
   
 
@@ -79,6 +82,9 @@ router.post('/approveEventById/:id',OrgEvents.approveEventById);
 router.post('/viewEventById/:id',OrgEvents.viewEventById);
 
 router.post('/viewApprovedEvents',OrgEvents.viewApprovedEvents);
+router.post('/addRating/:id',OrgEvents.addRating);
+router.post('/addReview',reviews.addReview);
+router.post('/viewAllreviewsByeventId/:id',reviews.viewAllreviewsByeventId);
 
 
 

@@ -41,6 +41,10 @@ const tmSchema=mongoose.Schema({
     adminApprved:{
         type:String,
         default:'Pending'
+    },
+    rating:{
+        type:Number,
+        default:0
     }
 });
 module.exports=mongoose.model('events',tmSchema)

@@ -175,6 +175,7 @@ const rejectEnrollmentById = (req, res) => {
 };
 const viewApprovedEnrollmentsByTcId = (req, res) => {
   EventEnrollment.find({ coachId: req.params.id ,approvalStatus:'approved'})
+  .populate('eventId organizerId')
     .exec()
     .then(data => {
       res.json({
