@@ -98,6 +98,7 @@ const editTeamMemberById = async (req, res) => {
     let existingTeamMember = await TeamMember.find({ contact });
     let TeamMemberData = await TeamMember.findById({ _id: req.params.id });
 
+<<<<<<< HEAD
     if (existingTeamMember.length && existingTeamMember[0].contact !== TeamMemberData.contact) {
         return res.json({
             status: 409,
@@ -105,6 +106,62 @@ const editTeamMemberById = async (req, res) => {
             data: null
         });
     }
+=======
+// Update TeamMembers by ID
+const editTeamMembersById = async (req, res) => {
+    console.log(req.file);
+    let flag = 0
+    const { name, contact, email, state,city,address ,pincode,category} = req.body;
+    let existingTeamMembers = await TeamMembers.find({ contact });
+    let TeamMembersData = await TeamMembers.findById({ _id: req.params.id });
+    await existingTeamMembers.map(x => {
+        if (x.contact != TeamMembersData.contact) {
+            flag = 1
+        }
+
+    })
+
+    if (flag == 0) {
+
+        await TeamMembers.findByIdAndUpdate({ _id: req.params.id }, {
+            name,
+            state,
+            contact,
+            address,
+            pincode,
+            city,
+            profilePic:req.file,
+            email,
+            category,
+            pincode
+          
+
+        })
+            .exec()
+            .then(data => {
+                res.json({
+                    status: 200,
+                    msg: "Updated successfully"
+                });
+            })
+            .catch(err => {
+                console.log(err);
+                res.status(500).json({
+                    status: 500,
+                    msg: "Data not Updated",
+                    Error: err
+                });
+            });
+    }
+    else {
+        return res.json({
+            status: 409,
+            msg: "contact Number Already Registered With Us !!",
+            data: null
+        });
+    }
+};
+>>>>>>> 1df9fe7874d8be2b14f3d16a8fd35a99cae37e71
 
     await TeamMember.findByIdAndUpdate({ _id: req.params.id }, {
         coachId: req.body.coachId,
@@ -242,6 +299,7 @@ const requireAuth = (req, res, next) => {
 };
 
 module.exports = {
+<<<<<<< HEAD
     registerTeamMember,
     viewTeamMembers,
     editTeamMemberById,
@@ -249,4 +307,9 @@ module.exports = {
     deleteTeamMemberById,
  viewTeamMemberByCoachId,
     upload
+=======
+    addTeamMembers,
+    ViewAllTeamMembers,
+    // editTeamMembersById
+>>>>>>> 1df9fe7874d8be2b14f3d16a8fd35a99cae37e71
 };

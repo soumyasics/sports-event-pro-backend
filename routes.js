@@ -26,17 +26,27 @@ router.post('/activateTeamCoachById/:id',Tc.activateTeamCoachById)
 router.post('/deActivateTeamCoachById/:id',Tc.deActivateTeamCoachById)
 router.post('/forgotPassword',Tc.forgotPassword)
 
+<<<<<<< HEAD
+=======
+//team members
+router.post('/addTeamMembers',Tm.addTeamMembers)
+router.post('/ViewAllTeamMembers',Tm.ViewAllTeamMembers)
+router.post('/editTeamMembersById/:id',Tm.editTeamMembersById)
+>>>>>>> 1df9fe7874d8be2b14f3d16a8fd35a99cae37e71
 
 
 
 //Enquiry routes
 router.post('/addEnquiry',Enquiry.addEnquiry);
+<<<<<<< HEAD
 router.post('/viewEnquiries',Enquiry.viewEnquiries);
 router.post('/deleteEnquiryById/:id',Enquiry.deleteEnquiryById);
+=======
+router.post('/viewEnquiryById/:id',Enquiry.viewEnquiryById);
+router.post('/viewallEnquiries',Enquiry.viewallEnquiries);
+router.post('/deleteEnquiryById',Enquiry.deleteEnquiryById);
+>>>>>>> 1df9fe7874d8be2b14f3d16a8fd35a99cae37e71
 
-  
-
-// router.post('/viewEnquiryById',Enquiry.viewEnquiryById);
 router.post('/registerOrganizer',Organizer.upload,Organizer.registerOrganizer);
 router.post('/viewOrganizerReqsForAdmin',Organizer.viewOrganizerReqsForAdmin);
 router.post('/loginOrganizer',Organizer.login);
