@@ -289,7 +289,12 @@ const requireAuth = (req, res, next) => {
 };
 
 module.exports = {
-    addTeamMembers,
-    ViewAllTeamMembers,
+    registerTeamMember,
+    // ViewAllTeamMembers,
     // editTeamMembersById
+    viewTeamMemberByCoachId,
+    viewTeamMemberById,
+    viewTeamMembers,
+    deleteTeamMemberById,
+    upload
 };

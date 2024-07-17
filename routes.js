@@ -27,16 +27,19 @@ router.post('/deActivateTeamCoachById/:id',Tc.deActivateTeamCoachById)
 router.post('/forgotPassword',Tc.forgotPassword)
 
 //team members
-router.post('/addTeamMembers',Tm.addTeamMembers)
-router.post('/ViewAllTeamMembers',Tm.ViewAllTeamMembers)
-router.post('/editTeamMembersById/:id',Tm.editTeamMembersById)
+router.post('/addTeamMembers/:id',Tm.registerTeamMember)
+router.post('/ViewAllTeamMembers',Tm.viewTeamMembers)
+// router.post('/editTeamMembersById/:id',Tm.editTeamMembersById)
+router.post('/deleteTeamMemberById/:id',Tm.deleteTeamMemberById)
+router.post('/viewTeamMemberByCoachId/:id',Tm.viewTeamMemberByCoachId)
+router.post('/viewTeamMemberById/:id',Tm.viewTeamMemberById)
 
 
 
 //Enquiry routes
 router.post('/addEnquiry',Enquiry.addEnquiry);
-router.post('/viewEnquiryById/:id',Enquiry.viewEnquiryById);
-router.post('/viewallEnquiries',Enquiry.viewallEnquiries);
+// router.post('/viewEnquiryById/:id',Enquiry.viewEnquiryById);
+router.post('/viewallEnquiries',Enquiry.viewEnquiries);
 router.post('/deleteEnquiryById',Enquiry.deleteEnquiryById);
 
 router.post('/registerOrganizer',Organizer.upload,Organizer.registerOrganizer);
@@ -94,7 +97,7 @@ router.post('/viewAllreviewsByeventId/:id',reviews.viewAllreviewsByeventId);
 router.post('/registerTeamMember/:id',Tm.upload,Tm.registerTeamMember)
 router.post('/viewTeamMemberByCoachId/:id',Tm.viewTeamMemberByCoachId)
 router.post('/viewTeamMemberById/:id',Tm.viewTeamMemberById)
-router.post('/editTeamMemberById/:id',Tm.upload,Tm.editTeamMemberById)
+// router.post('/editTeamMemberById/:id',Tm.upload,Tm.editTeamMemberById)
 router.post('/deleteTeamMemberById/:id',Tm.deleteTeamMemberById)
 
 
