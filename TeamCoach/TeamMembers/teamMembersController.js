@@ -162,5 +162,5 @@ const editTeamMembersById = async (req, res) => {
 module.exports = {
     addTeamMembers,
     ViewAllTeamMembers,
-    // editTeamMembersById
+    editTeamMembersById
 };
