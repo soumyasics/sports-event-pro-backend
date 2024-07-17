@@ -18,6 +18,7 @@ const storage = multer.diskStorage({
     },
 });
 const upload = multer({ storage: storage }).array("files", 2);
+const uploadSingle = multer({ storage: storage }).single('photo');
 
 const registerOrganizer = async (req, res) => {
     try {
@@ -131,7 +132,7 @@ const editOrganizerById = async (req, res) => {
             email,
             experience,
             password,
-            photo: req.files[0]
+            photo: req.file
             
           
 
@@ -471,5 +472,6 @@ module.exports = {
     rejectOrganizerById,
     viewOrganizerReqsByAdmin,
     viewOrganizers,
-    forgotPassword
+    forgotPassword,
+    uploadSingle
 }
