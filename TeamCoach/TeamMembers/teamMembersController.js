@@ -98,15 +98,6 @@ const editTeamMemberById = async (req, res) => {
     let existingTeamMember = await TeamMember.find({ contact });
     let TeamMemberData = await TeamMember.findById({ _id: req.params.id });
 
-<<<<<<< HEAD
-    if (existingTeamMember.length && existingTeamMember[0].contact !== TeamMemberData.contact) {
-        return res.json({
-            status: 409,
-            msg: "Contact Number Already Registered With Us !!",
-            data: null
-        });
-    }
-=======
 // Update TeamMembers by ID
 const editTeamMembersById = async (req, res) => {
     console.log(req.file);
@@ -161,7 +152,6 @@ const editTeamMembersById = async (req, res) => {
         });
     }
 };
->>>>>>> 1df9fe7874d8be2b14f3d16a8fd35a99cae37e71
 
     await TeamMember.findByIdAndUpdate({ _id: req.params.id }, {
         coachId: req.body.coachId,
@@ -299,17 +289,12 @@ const requireAuth = (req, res, next) => {
 };
 
 module.exports = {
-<<<<<<< HEAD
     registerTeamMember,
-    viewTeamMembers,
-    editTeamMemberById,
-    viewTeamMemberById,
-    deleteTeamMemberById,
- viewTeamMemberByCoachId,
-    upload
-=======
-    addTeamMembers,
-    ViewAllTeamMembers,
+    // ViewAllTeamMembers,
     // editTeamMembersById
->>>>>>> 1df9fe7874d8be2b14f3d16a8fd35a99cae37e71
+    viewTeamMemberByCoachId,
+    viewTeamMemberById,
+    viewTeamMembers,
+    deleteTeamMemberById,
+    upload
 };
