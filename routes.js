@@ -6,6 +6,9 @@ const Enquiry =require("./Enquiry/enquiryController");
 const Admin=require("./Admin/adminController")
 const viewers=require("./Viewers/viewerController")
 const Organizer=require("./Organizer/OrganizerController")
+const OrgEvents=require("./Events/eventController")
+const EventEnrollments=require("./EventEnrollments/enrollmentController")
+const reviews=require("./Reviews/reviewController")
 
 
 
@@ -40,7 +43,7 @@ router.post('/registerOrganizer',Organizer.upload,Organizer.registerOrganizer);
 router.post('/viewOrganizerReqsForAdmin',Organizer.viewOrganizerReqsForAdmin);
 router.post('/loginOrganizer',Organizer.login);
 router.post('/viewOrganizerById/:id',Organizer.viewOrganizerById);
-router.post('/editOrganizerById/:id',Organizer.upload,Organizer.editOrganizerById);
+router.post('/editOrganizerById/:id',Organizer.uploadSingle,Organizer.editOrganizerById);
 router.post('/deleteOrganizerById/:id',Organizer.deleteOrganizerById);
 router.post('/approveOrganizerById/:id',Organizer.approveOrganizerById);
 router.post('/activateOrganizerById/:id',Organizer.activateOrganizerById);
@@ -72,7 +75,38 @@ router.post('/activateviewersById/:id',viewers.activateviewersById);
 router.post('/deActivateviewersById/:id',viewers.deActivateviewersById);
 router.post('/forgotPasswordViewer',viewers.forgotPassword);
 
+//events
+router.post('/addEvent',OrgEvents.upload,OrgEvents.registerEvent);
+router.post('/viewEventByOrganizerId/:id',OrgEvents.viewEventByOrganizerId);
+router.post('/viewEvents',OrgEvents.viewEvents);
+router.post('/rejectEventById/:id',OrgEvents.rejectEventById);
+router.post('/approveEventById/:id',OrgEvents.approveEventById);
+router.post('/viewEventById/:id',OrgEvents.viewEventById);
 
+router.post('/viewApprovedEvents',OrgEvents.viewApprovedEvents);
+router.post('/addRating/:id',OrgEvents.addRating);
+router.post('/addReview',reviews.addReview);
+router.post('/viewAllreviewsByeventId/:id',reviews.viewAllreviewsByeventId);
+
+
+
+//team members
+router.post('/registerTeamMember/:id',Tm.upload,Tm.registerTeamMember)
+router.post('/viewTeamMemberByCoachId/:id',Tm.viewTeamMemberByCoachId)
+router.post('/viewTeamMemberById/:id',Tm.viewTeamMemberById)
+router.post('/editTeamMemberById/:id',Tm.upload,Tm.editTeamMemberById)
+router.post('/deleteTeamMemberById/:id',Tm.deleteTeamMemberById)
+
+
+//enrollments
+router.post('/registerEnrollment/:id',EventEnrollments.registerEnrollment);
+router.post('/viewEnrollmentById/:id',EventEnrollments.viewEnrollmentById);
+router.post('/viewEnrollments',EventEnrollments.viewEnrollments);
+router.post('/deleteEnrollmentById/:id',EventEnrollments.deleteEnrollmentById);
+router.post('/approveEnrollmentById/:id',EventEnrollments.approveEnrollmentById);
+router.post('/rejectEnrollmentById/:id',EventEnrollments.rejectEnrollmentById);
+router.post('/viewEnrollmentsByOrganizerId/:id',EventEnrollments.viewPendingEnrollmentsByOrganizerId);
+router.post('/viewApprovedEnrollmentsByTcId/:id',EventEnrollments.viewApprovedEnrollmentsByTcId);
 
 module.exports=router
 

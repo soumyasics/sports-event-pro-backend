@@ -25,10 +25,7 @@ const tmSchema=mongoose.Schema({
         type:String,
         required:true
     },
-    country:{
-        type:String,
-        required:true,
-    },
+
     category:{
         type:String,
         required:true
@@ -45,5 +42,8 @@ const tmSchema=mongoose.Schema({
         type:String,
         required:true
     }, 
+    photo:{
+        type:Object
+    }
 });
 module.exports=mongoose.model('teammembers',tmSchema)

@@ -39,9 +39,9 @@ const addEnquiry = async (req, res) => {
 };
 
 
-//View Enquiry by ID
-const viewEnquiryById = (req, res) => {
-    Enquiry.findById({ _id: req.params.id })
+// View Enquiry by ID
+const viewEnquiries = (req, res) => {
+    Enquiry.find({ })
         .exec()
         .then(data => {
             res.json({
@@ -59,45 +59,19 @@ const viewEnquiryById = (req, res) => {
         });
 };
 
-// View all Enquiries
-const viewallEnquiries = (req, res) => {
-    Enquiry.find()
-        .exec()
-        .then(data => {
-            if (data.length > 0) {
-                res.json({
-                    status: 200,
-                    msg: "Data obtained successfully",
-                    data: data
-                });
-            } else {
-                res.json({
-                    status: 200,
-                    msg: "No Data obtained"
-                });
-            }
-        })
-        .catch(err => {
-            res.status(500).json({
-                status: 500,
-                msg: "Data not obtained",
-                Error: err
-            });
-        });
-};
-
-// Delete Enquiry by ID
+// deleteEnquiryById Enquiry by ID
 const deleteEnquiryById = (req, res) => {
-    Enquiry.deleteOne({ _id: req.params.id })
+    Enquiry.findByIdAndDelete({_id:req.params.id})
         .exec()
         .then(data => {
             res.json({
                 status: 200,
-                msg: "Data updated successfully",
+                msg: "Data Removed successfully",
                 data: data
             });
         })
         .catch(err => {
+            console.log(err);
             res.status(500).json({
                 status: 500,
                 msg: "No Data obtained",
@@ -113,9 +87,8 @@ const deleteEnquiryById = (req, res) => {
 
 module.exports = {
     addEnquiry,
-    viewEnquiryById,
-    viewallEnquiries,
-    deleteEnquiryById,
+    viewEnquiries,
+    deleteEnquiryById
 };
 
 
