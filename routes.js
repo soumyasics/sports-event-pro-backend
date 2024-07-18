@@ -10,7 +10,7 @@ const OrgEvents=require("./Events/eventController")
 const EventEnrollments=require("./EventEnrollments/enrollmentController")
 const reviews=require("./Reviews/reviewController")
 const OrganizerBlog=require("./Organizer/OrganizerBlog/OrganizerBlogController")
-
+const complaints=require('./complaints/complaintController')
 
 
 //team coach routes
