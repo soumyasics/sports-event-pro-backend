@@ -1,6 +1,7 @@
 const TeamMember = require('./teamMembersSchema'); // Adjust the path according to your project structure
 const jwt = require('jsonwebtoken');
 const multer = require("multer");
+const teamCoachSchema = require('../teamCoachSchema');
 
 const secret = 'TeamMember'; // Replace this with your own secret key
 
@@ -21,6 +22,10 @@ const upload = multer({ storage: storage }).single('photo');
 
 const registerTeamMember = async (req, res) => {
     try {
+
+       let coachData= await teamCoachSchema.findById(req.params.id)
+       let teams= await TeamMember.find({coachId:req.params.id})
+let teamCount=teams.length?teams.length:0
         const { name, contact, email, pincode,  category, address, city, state } = req.body;
 
         const newTeamMember = new TeamMember({
@@ -44,7 +49,14 @@ const registerTeamMember = async (req, res) => {
                 data: null
             });
         }
-
+        console.log(teamCount);
+        if (teamCount==coachData.totalteammembers) {
+            return res.json({
+                status: 409,
+                msg: `You have Already Added ${teamCount} Members !!`,
+                data: null
+            });
+        }
         await newTeamMember.save()
             .then(data => {
                 return res.json({
@@ -93,18 +105,12 @@ const viewTeamMembers = (req, res) => {
         });
 };
 
-const editTeamMemberById = async (req, res) => {
-    const { name, contact, email, pincode, country, category, address, city, state } = req.body;
-    let existingTeamMember = await TeamMember.find({ contact });
-    let TeamMemberData = await TeamMember.findById({ _id: req.params.id });
 
-// Update TeamMembers by ID
 const editTeamMembersById = async (req, res) => {
-    console.log(req.file);
     let flag = 0
     const { name, contact, email, state,city,address ,pincode,category} = req.body;
-    let existingTeamMembers = await TeamMembers.find({ contact });
-    let TeamMembersData = await TeamMembers.findById({ _id: req.params.id });
+    let existingTeamMembers = await TeamMember.find({ contact });
+    let TeamMembersData = await TeamMember.findById({ _id: req.params.id });
     await existingTeamMembers.map(x => {
         if (x.contact != TeamMembersData.contact) {
             flag = 1
@@ -114,14 +120,13 @@ const editTeamMembersById = async (req, res) => {
 
     if (flag == 0) {
 
-        await TeamMembers.findByIdAndUpdate({ _id: req.params.id }, {
+        await TeamMember.findByIdAndUpdate({ _id: req.params.id }, {
             name,
             state,
             contact,
             address,
             pincode,
             city,
-            profilePic:req.file,
             email,
             category,
             pincode
@@ -151,7 +156,7 @@ const editTeamMembersById = async (req, res) => {
             data: null
         });
     }
-};
+
 
     await TeamMember.findByIdAndUpdate({ _id: req.params.id }, {
         coachId: req.body.coachId,
@@ -159,7 +164,6 @@ const editTeamMembersById = async (req, res) => {
         contact,
         email,
         pincode,
-        country,
         category,
         address,
         city,
@@ -291,7 +295,7 @@ const requireAuth = (req, res, next) => {
 module.exports = {
     registerTeamMember,
     // ViewAllTeamMembers,
-    // editTeamMembersById
+    editTeamMembersById,
     viewTeamMemberByCoachId,
     viewTeamMemberById,
     viewTeamMembers,
