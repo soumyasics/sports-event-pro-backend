@@ -9,7 +9,8 @@ const Organizer=require("./Organizer/OrganizerController")
 const OrgEvents=require("./Events/eventController")
 const EventEnrollments=require("./EventEnrollments/enrollmentController")
 const reviews=require("./Reviews/reviewController")
-const complaints=require('./complaints/complaintController')
+const OrganizerBlog=require("./Organizer/OrganizerBlog/OrganizerBlogController")
+
 
 
 //team coach routes
@@ -111,6 +112,15 @@ router.post('/approveEnrollmentById/:id',EventEnrollments.approveEnrollmentById)
 router.post('/rejectEnrollmentById/:id',EventEnrollments.rejectEnrollmentById);
 router.post('/viewEnrollmentsByOrganizerId/:id',EventEnrollments.viewPendingEnrollmentsByOrganizerId);
 router.post('/viewApprovedEnrollmentsByTcId/:id',EventEnrollments.viewApprovedEnrollmentsByTcId);
+
+
+
+
+//OrganiserBlog
+router.post('/registerOrganizerBlog',OrganizerBlog.uploads,OrganizerBlog.registerOrganizerBlog);
+router.post('/viewOrganizerBlogById/:id',OrganizerBlog.viewOrganizerBlogById);
+router.post('/viewOrganizerBlogs',OrganizerBlog.viewOrganizerBlogs);
+
 
 
 
