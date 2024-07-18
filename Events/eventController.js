@@ -295,6 +295,13 @@ const addRating = (req, res) => {
         });
     });
 };
+
+
+
+
+
+
+
 module.exports = {
   registerEvent,
   viewEvents,
