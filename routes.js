@@ -10,7 +10,7 @@ const OrgEvents=require("./Events/eventController")
 const EventEnrollments=require("./EventEnrollments/enrollmentController")
 const reviews=require("./Reviews/reviewController")
 const OrganizerBlog=require("./Organizer/OrganizerBlog/OrganizerBlogController")
-
+const complaints=require('./complaints/complaintController')
 
 
 //team coach routes
@@ -91,6 +91,7 @@ router.post('/viewApprovedEvents',OrgEvents.viewApprovedEvents);
 router.post('/addRating/:id',OrgEvents.addRating);
 router.post('/addReview',reviews.addReview);
 router.post('/viewAllreviewsByeventId/:id',reviews.viewAllreviewsByeventId);
+router.post('/viewAllreviews',reviews.viewAllreviews);
 
 
 
@@ -98,7 +99,7 @@ router.post('/viewAllreviewsByeventId/:id',reviews.viewAllreviewsByeventId);
 router.post('/registerTeamMember/:id',Tm.upload,Tm.registerTeamMember)
 router.post('/viewTeamMemberByCoachId/:id',Tm.viewTeamMemberByCoachId)
 router.post('/viewTeamMemberById/:id',Tm.viewTeamMemberById)
-// router.post('/editTeamMemberById/:id',Tm.upload,Tm.editTeamMemberById)
+router.post('/editTeamMemberById/:id',Tm.editTeamMembersById)
 router.post('/deleteTeamMemberById/:id',Tm.deleteTeamMemberById)
 
 
@@ -120,6 +121,14 @@ router.post('/registerOrganizerBlog',OrganizerBlog.uploads,OrganizerBlog.registe
 router.post('/viewOrganizerBlogById/:id',OrganizerBlog.viewOrganizerBlogById);
 router.post('/viewOrganizerBlogs',OrganizerBlog.viewOrganizerBlogs);
 
+
+
+
+//complaints
+router.post('/addComplaint',complaints.addcomplaint)
+router.post('/viewAllComplaints',complaints.viewAllcomplaints)
+router.post('/viewComplaintById/:id',complaints.viewcomplaintById)
+router.post('/deleteComplaintById/:id',complaints.deletecomplaintById)
 
 module.exports=router
 

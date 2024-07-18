@@ -55,6 +55,27 @@ const viewAllreviewsByeventId = (req, res) => {
 };
 
 
+const viewAllreviews = (req, res) => {
+  reviewSchema.find({})
+    .populate('eventId tcId')
+   
+  .exec().
+    then((data) => {
+      res.status(200).json({
+        status:200,
+        message: "reviews retrieved successfully",
+        data: data,
+      });
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).json({
+        status:500,
+        message: "Error retrieving reviews",
+        error: err,
+      });
+    });
+};
 
 
 
@@ -62,6 +83,6 @@ const viewAllreviewsByeventId = (req, res) => {
 module.exports = {
   addReview,
   viewAllreviewsByeventId,
-
+  viewAllreviews
  
 }

@@ -57,7 +57,7 @@ const tcSchema=mongoose.Schema({
 
     },
     totalteammembers:{
-        type:String,
+        type:Number,
         required:true
 
     },

@@ -8,6 +8,12 @@ const tmSchema=mongoose.Schema({
         required:true,
        
     },
+    coachId:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:'teamcoaches',
+        required:true
+       
+    },
     contact:{
         type:String,
         

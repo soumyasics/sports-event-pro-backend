@@ -7,9 +7,9 @@ const rSchema = new Schema(
             type: mongoose.Schema.Types.ObjectId,
             ref: "events"
             },
-            tcId:{
+            organizerId:{
               type: mongoose.Schema.Types.ObjectId,
-              ref: "teamcoaches"
+              ref: "organizers"
             
             },
             date:{
@@ -17,14 +17,14 @@ const rSchema = new Schema(
               required: true,
             },
         
-        review: {
-            type: String,
+        score: {
+            type: Number,
             required:true
 
         }
         ,
-        rating: {
-          type: Number,
+        position: {
+          type: String,
 default:0
       }
       
