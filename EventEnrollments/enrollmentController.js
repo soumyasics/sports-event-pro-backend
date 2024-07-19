@@ -113,7 +113,24 @@ const viewPendingEnrollmentsByOrganizerId = (req, res) => {
       });
     });
 };
-
+const viewPAprvdEnrollmentsByOrganizerId = (req, res) => {
+  EventEnrollment.find({ organizerId: req.params.id,approvalStatus:'approved' }).populate('eventId coachId')
+    .exec()
+    .then(data => {
+      res.json({
+        status: 200,
+        msg: 'Data obtained successfully',
+        data: data,
+      });
+    })
+    .catch(err => {
+      res.status(500).json({
+        status: 500,
+        msg: 'No data obtained',
+        Error: err,
+      });
+    });
+};
 // Delete event enrollment by ID
 const deleteEnrollmentById = (req, res) => {
   EventEnrollment.findByIdAndDelete({ _id: req.params.id })
@@ -243,10 +260,15 @@ const updatePositions = async (req,res) => {
           await scoreboards[i].save();
       }
 
-      console.log('Positions updated successfully');
+     return res.json({
+      status:200,
+      msg:"Updated Successfully"
+     })
   } catch (err) {
-      console.error('Error updating positions:', err);
-  }
+    return res.json({
+      status:500,
+      msg:"Internal server Error"
+     })  }
 };
 
 
@@ -263,7 +285,7 @@ module.exports = {
   approveEnrollmentById,
   rejectEnrollmentById,
   viewApprovedEnrollmentsByTcId,
-
+viewPAprvdEnrollmentsByOrganizerId,
 
   addScoreByEnrollmentById,
   updatePositions

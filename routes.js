@@ -113,6 +113,7 @@ router.post('/approveEnrollmentById/:id',EventEnrollments.approveEnrollmentById)
 router.post('/rejectEnrollmentById/:id',EventEnrollments.rejectEnrollmentById);
 router.post('/viewEnrollmentsByOrganizerId/:id',EventEnrollments.viewPendingEnrollmentsByOrganizerId);
 router.post('/viewApprovedEnrollmentsByTcId/:id',EventEnrollments.viewApprovedEnrollmentsByTcId);
+router.post('/viewPAprvdEnrollmentsByOrganizerId/:id',EventEnrollments.viewPAprvdEnrollmentsByOrganizerId);
 
 router.post('/addScoreByEnrollmentById/:id',EventEnrollments.addScoreByEnrollmentById);
 router.post('/updatePositions/:id',EventEnrollments.updatePositions);
