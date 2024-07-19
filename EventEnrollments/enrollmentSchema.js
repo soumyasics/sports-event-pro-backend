@@ -27,6 +27,14 @@ const tmSchema=mongoose.Schema({
     date:{
         type:Date,
         required:true
+    },score:{
+        type:Number,
+        default:0
+    },
+    position:{
+        type:String,
+        
+        default:'',
     }
 
   

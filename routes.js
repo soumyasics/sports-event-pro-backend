@@ -11,6 +11,7 @@ const EventEnrollments=require("./EventEnrollments/enrollmentController")
 const reviews=require("./Reviews/reviewController")
 const OrganizerBlog=require("./Organizer/OrganizerBlog/OrganizerBlogController")
 const complaints=require('./complaints/complaintController')
+const scoreboard=require('./ScoreBoard/scoreBoardController')
 
 
 //team coach routes
@@ -113,6 +114,8 @@ router.post('/rejectEnrollmentById/:id',EventEnrollments.rejectEnrollmentById);
 router.post('/viewEnrollmentsByOrganizerId/:id',EventEnrollments.viewPendingEnrollmentsByOrganizerId);
 router.post('/viewApprovedEnrollmentsByTcId/:id',EventEnrollments.viewApprovedEnrollmentsByTcId);
 
+router.post('/addScoreByEnrollmentById/:id',EventEnrollments.addScoreByEnrollmentById);
+router.post('/updatePositions/:id',EventEnrollments.updatePositions);
 
 
 
@@ -129,6 +132,11 @@ router.post('/addComplaint',complaints.addcomplaint)
 router.post('/viewAllComplaints',complaints.viewAllcomplaints)
 router.post('/viewComplaintById/:id',complaints.viewcomplaintById)
 router.post('/deleteComplaintById/:id',complaints.deletecomplaintById)
+
+
+
+//scoreboard
+// router.post('/createScoreboard',scoreboard.createScoreboard)
 
 module.exports=router
 
