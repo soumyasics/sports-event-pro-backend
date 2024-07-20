@@ -23,6 +23,10 @@ const OrganizerblogSchema=mongoose.Schema({
         ref:'organizers',
         required:true
     },
+    date:{
+        type:Date,
+        default:new Date()
+    }
 
    
 });

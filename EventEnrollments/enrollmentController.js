@@ -1,4 +1,5 @@
 const eventSchema = require('../Events/eventSchema');
+const teamMembersSchema = require('../TeamCoach/TeamMembers/teamMembersSchema');
 const EventEnrollment = require('./enrollmentSchema');
 const jwt = require('jsonwebtoken');
 
@@ -10,6 +11,13 @@ const registerEnrollment = async (req, res) => {
     const { coachId } = req.body;
     const eventId=req.params.id
 const exEnroll=await EventEnrollment.findOne({coachId,eventId})
+const hasTeam=await teamMembersSchema.findOne({coachId})
+if(!hasTeam){
+  return res.json({
+      status:400,
+      msg:"Please add your Team menbers and Enroll  !!"
+  })
+}
 if(exEnroll){
     return res.json({
         status:400,
@@ -48,7 +56,8 @@ const eventData=await eventSchema.findById({_id:eventId})
 
 // View all event enrollments
 const viewEnrollments = (req, res) => {
-  EventEnrollment.find().populate('coachId eventId organizerId')
+  console.log(req.params.id);
+  EventEnrollment.find({eventId:req.params.id}).populate('coachId eventId organizerId')
     .exec()
     .then(data => {
       if (data.length > 0) {
@@ -76,7 +85,7 @@ const viewEnrollments = (req, res) => {
 
 // View event enrollment by ID
 const viewEnrollmentById = (req, res) => {
-  EventEnrollment.findById({ _id: req.params.id })
+  EventEnrollment.findById({ _id: req.params.id }).populate('eventId')
     .exec()
     .then(data => {
       res.json({
@@ -239,8 +248,9 @@ const addScoreByEnrollmentById = (req, res) => {
 const updatePositions = async (req,res) => {
   try {
     let eventId=req.params.id
+    console.log(eventId);
       const scoreboards = await EventEnrollment.find({ eventId }).sort({ score: -1 });
-
+console.log("in".scoreboards);
       for (let i = 0; i < scoreboards.length; i++) {
           let position;
           switch (i) {

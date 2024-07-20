@@ -115,6 +115,35 @@ const viewApprovedEvents = (req, res) => {
 };
 
 
+
+// View all approved events
+const viewApprovedEventsByOrgId = (req, res) => {
+  Event.find({adminApprved:'Approved',organizerId:req.params.id}).populate('organizerId')
+    .exec()
+    .then(data => {
+      if (data.length > 0) {
+        console.log(data);
+        res.json({
+          status: 200,
+          msg: 'Data obtained successfully',
+          data: data,
+        });
+      } else {
+        res.json({
+          status: 200,
+          msg: 'No data obtained',
+        });
+      }
+    })
+    .catch(err => {
+      res.status(500).json({
+        status: 500,
+        msg: 'Data not obtained',
+        Error: err,
+      });
+    });
+};
+
 // Update event by ID
 const editEventById = async (req, res) => {
   const { organizerId, name, venue, date, time, category } = req.body;
@@ -314,5 +343,6 @@ module.exports = {
   approveEventById,
   rejectEventById,
   viewApprovedEvents,
-  addRating
+  addRating,
+  viewApprovedEventsByOrgId
 };

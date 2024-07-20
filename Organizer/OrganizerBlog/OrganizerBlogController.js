@@ -71,7 +71,7 @@ console.log("req",req.files);
 
 // View all OrganizerBlogs
 const viewOrganizerBlogs = (req, res) => {
-    OrganizerBlog.find()
+    OrganizerBlog.find({organizerId:req.params.id}).populate('organizerId')
         .exec()
         .then(data => {
             if (data.length > 0) {
