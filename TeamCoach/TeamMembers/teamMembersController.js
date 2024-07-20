@@ -207,15 +207,17 @@ const viewTeamMemberById = (req, res) => {
         });
 };
 
-const viewTeamMemberByCoachId = (req, res) => {
-    TeamMember.find({ coachId: req.params.id })
+const viewTeamMemberByCoachId =async (req, res) => {
+    let coaches=await teamCoachSchema.findById(req.params.id )
+    TeamMember.find({ coachId: req.params.id }).populate('coachId')
         
         .exec()
         .then(data => {
             res.json({
                 status: 200,
                 msg: "Data obtained successfully",
-                data: data
+                data: data,
+                coach:coaches
             });
         })
         .catch(err => {

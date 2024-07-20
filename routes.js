@@ -59,9 +59,6 @@ router.post('/forgotPasswordOrganizer',Organizer.forgotPassword);
 
 
 
-
-
-
 //admin
 
 router.post('/adminpassword',Admin.adminpassword);
@@ -87,13 +84,13 @@ router.post('/viewEvents',OrgEvents.viewEvents);
 router.post('/rejectEventById/:id',OrgEvents.rejectEventById);
 router.post('/approveEventById/:id',OrgEvents.approveEventById);
 router.post('/viewEventById/:id',OrgEvents.viewEventById);
+router.post('/viewApprovedEventsByOrgId/:id',OrgEvents.viewApprovedEventsByOrgId);
 
 router.post('/viewApprovedEvents',OrgEvents.viewApprovedEvents);
 router.post('/addRating/:id',OrgEvents.addRating);
 router.post('/addReview',reviews.addReview);
 router.post('/viewAllreviewsByeventId/:id',reviews.viewAllreviewsByeventId);
 router.post('/viewAllreviews',reviews.viewAllreviews);
-
 
 
 //team members
@@ -107,12 +104,13 @@ router.post('/deleteTeamMemberById/:id',Tm.deleteTeamMemberById)
 //enrollments
 router.post('/registerEnrollment/:id',EventEnrollments.registerEnrollment);
 router.post('/viewEnrollmentById/:id',EventEnrollments.viewEnrollmentById);
-router.post('/viewEnrollments',EventEnrollments.viewEnrollments);
+router.post('/viewEnrollments/:id',EventEnrollments.viewEnrollments);
 router.post('/deleteEnrollmentById/:id',EventEnrollments.deleteEnrollmentById);
 router.post('/approveEnrollmentById/:id',EventEnrollments.approveEnrollmentById);
 router.post('/rejectEnrollmentById/:id',EventEnrollments.rejectEnrollmentById);
 router.post('/viewEnrollmentsByOrganizerId/:id',EventEnrollments.viewPendingEnrollmentsByOrganizerId);
 router.post('/viewApprovedEnrollmentsByTcId/:id',EventEnrollments.viewApprovedEnrollmentsByTcId);
+router.post('/viewPAprvdEnrollmentsByOrganizerId/:id',EventEnrollments.viewPAprvdEnrollmentsByOrganizerId);
 
 router.post('/addScoreByEnrollmentById/:id',EventEnrollments.addScoreByEnrollmentById);
 router.post('/updatePositions/:id',EventEnrollments.updatePositions);
@@ -122,7 +120,7 @@ router.post('/updatePositions/:id',EventEnrollments.updatePositions);
 //OrganiserBlog
 router.post('/registerOrganizerBlog',OrganizerBlog.uploads,OrganizerBlog.registerOrganizerBlog);
 router.post('/viewOrganizerBlogById/:id',OrganizerBlog.viewOrganizerBlogById);
-router.post('/viewOrganizerBlogs',OrganizerBlog.viewOrganizerBlogs);
+router.post('/viewOrganizerBlogs/:id',OrganizerBlog.viewOrganizerBlogs);
 
 
 
