@@ -30,6 +30,7 @@ const registerEvent = async (req, res) => {
       venue,
       date,
       time,
+      price,
       category,
       banner: req.file,
     });
