@@ -38,10 +38,6 @@ const tmSchema=mongoose.Schema({
         type:Object,
         required:true
     }, 
-    price:{
-        type:Object,
-        required:true
-    },
     adminApprved:{
         type:String,
         default:'Pending'
