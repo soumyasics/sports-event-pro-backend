@@ -12,6 +12,7 @@ const reviews=require("./Reviews/reviewController")
 const OrganizerBlog=require("./Organizer/OrganizerBlog/OrganizerBlogController")
 const complaints=require('./complaints/complaintController')
 const ticketController=require('./Tickets/ticketController')
+const tickeetbookings=require('./TicketBooking/bookingController')
 
 
 //team coach routes
@@ -111,6 +112,7 @@ router.post('/rejectEnrollmentById/:id',EventEnrollments.rejectEnrollmentById);
 router.post('/viewEnrollmentsByOrganizerId/:id',EventEnrollments.viewPendingEnrollmentsByOrganizerId);
 router.post('/viewApprovedEnrollmentsByTcId/:id',EventEnrollments.viewApprovedEnrollmentsByTcId);
 router.post('/viewPAprvdEnrollmentsByOrganizerId/:id',EventEnrollments.viewPAprvdEnrollmentsByOrganizerId);
+router.post('/viewApprovedEnrollmentsByEventId/:id',EventEnrollments.viewApprovedEnrollmentsByEventId);
 
 router.post('/addScoreByEnrollmentById/:id',EventEnrollments.addScoreByEnrollmentById);
 router.post('/updatePositions/:id',EventEnrollments.updatePositions);
@@ -143,7 +145,16 @@ router.post('/viewTicketsByEventId/:eventId', ticketController.viewTicketsByEven
 router.post('/viewTicketsByOrganizerId/:organizerId', ticketController.viewTicketsByOrganizerId);
 router.post('/deleteTicketById/:id', ticketController.deleteTicketById);
 router.post('/viewApprovedEventsByOrgIdWithoutTickets/:id', ticketController.viewApprovedEventsByOrgIdWithoutTickets);
+router.post('/getValidTickets', ticketController.getValidTickets);
 
+//ticket Booking
+
+router.post('/createTicket', tickeetbookings.createTicket);
+router.post('/viewTicketBookings', tickeetbookings.viewTickets);
+router.post('/viewTicketBookingById/:id', tickeetbookings.viewTicketById);
+router.post('/viewTicketBookingByEventId/:id', tickeetbookings.viewTicketByEventId);
+router.post('/viewTicketBookingByViwerId/:id', tickeetbookings.viewTicketByViwerId);
+router.post('/updatePayment/:id', tickeetbookings.updatePayment);
 
 
 module.exports=router

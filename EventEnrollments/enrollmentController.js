@@ -199,6 +199,7 @@ const rejectEnrollmentById = (req, res) => {
       });
     });
 };
+
 const viewApprovedEnrollmentsByTcId = (req, res) => {
   EventEnrollment.find({ coachId: req.params.id ,approvalStatus:'approved'})
   .populate('eventId organizerId')
@@ -219,6 +220,25 @@ const viewApprovedEnrollmentsByTcId = (req, res) => {
     });
 };
 
+const viewApprovedEnrollmentsByEventId = (req, res) => {
+  EventEnrollment.find({ eventId: req.params.id ,approvalStatus:'approved'})
+  .populate('coachId organizerId')
+    .exec()
+    .then(data => {
+      res.json({
+        status: 200,
+        msg: 'Data obtained successfully',
+        data: data,
+      });
+    })
+    .catch(err => {
+      res.status(500).json({
+        status: 500,
+        msg: 'No data obtained',
+        Error: err,
+      });
+    });
+};
 
 //scoreboard
 
@@ -296,6 +316,7 @@ module.exports = {
   rejectEnrollmentById,
   viewApprovedEnrollmentsByTcId,
 viewPAprvdEnrollmentsByOrganizerId,
+viewApprovedEnrollmentsByEventId,
 
   addScoreByEnrollmentById,
   updatePositions

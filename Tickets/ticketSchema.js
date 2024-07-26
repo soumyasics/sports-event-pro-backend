@@ -13,6 +13,9 @@ const TicketSchema = new Schema({
     seatingCapacity: {
         type: Number,
         required: true
+    },availableSeats: {
+        type: Number,
+        default:0
     },
     eventId: {
         type: mongoose.Schema.Types.ObjectId,

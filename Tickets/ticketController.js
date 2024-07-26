@@ -15,6 +15,7 @@ const registerTicket = async (req, res) => {
       seatingCapacity,
       eventId,
       organizerId,
+      availableSeats:seatingCapacity,
       amount,
       banner: req.file,
     });
@@ -69,7 +70,7 @@ const viewTickets = (req, res) => {
 
 // View tickets by event ID
 const viewTicketsByEventId = (req, res) => {
-  Ticket.find({ eventId: req.params.id })
+  Ticket.find({ eventId: req.params.id ,availableSeats:{$gt:0}})
     .exec()
     .then(data => {
       if (data.length > 0) {
@@ -155,7 +156,7 @@ const editTicketById = async (req, res) => {
 
 // View ticket by ID
 const viewTicketById = (req, res) => {
-  Ticket.findById({ _id: req.params.id })
+  Ticket.findById({ _id: req.params.id }).populate('eventId')
     .exec()
     .then(data => {
       res.json({
@@ -274,6 +275,34 @@ const viewApprovedEventsByOrgIdWithoutTickets = async (req, res) => {
   
   
   
+const getValidTickets = async (req,res) => {
+
+      const today = new Date();
+      const tickets = await Ticket.find({
+          startDate: { $lte: today },
+          endDate: { $gte: today }
+      }).populate('eventId')
+      .then(data=>{
+
+ 
+     res.json({
+      status:200,
+      data:data,
+      msg:'Data obtained'
+     });
+    })
+  .catch (error=> {
+      console.error('Error fetching valid tickets:', error);
+      res.json({
+        status:500,
+        err:error,
+        msg:'Data obtained'
+       });
+      })
+  }
+
+
+
   
   
 module.exports = {
@@ -284,5 +313,6 @@ module.exports = {
   editTicketById,
   viewTicketById,
   deleteTicketById,
-  viewApprovedEventsByOrgIdWithoutTickets
+  viewApprovedEventsByOrgIdWithoutTickets,
+  getValidTickets
 };
