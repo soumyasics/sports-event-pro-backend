@@ -6,7 +6,7 @@ console.log(req.body.userRole);
   const complaint1 = new complaint({
     name: req.body.name,
     userRole: req.body.userRole,
-
+    organizerId:req.body.organizerId,
       complaint:req.body.complaint,
       date:new Date()
 
