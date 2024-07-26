@@ -20,7 +20,11 @@ const complaintSchema = new Schema(
             type: String,
             required:true
 
-        }
+        },
+        organizerId:{
+            type:mongoose.Schema.Types.ObjectId,
+            ref:'organizers',
+        },
     })
 const complaint = mongoose.model("complaints", complaintSchema);
 module.exports = complaint;
