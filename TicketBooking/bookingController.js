@@ -1,11 +1,14 @@
 const Ticket = require('./bookibgSchema'); 
+const ticketSchema = require('../Tickets/ticketSchema'); 
 
 
 
 // Create a new ticket
 const createTicket = async (req, res) => {
   try {
+    let tickStatus=false
     const { ticketId, ticketCount, amount, eventId, viewerId } = req.body;
+const ticketData=await ticketSchema.findById(ticketId)
 
     const newTicket = new Ticket({
       ticketId,
@@ -14,9 +17,10 @@ const createTicket = async (req, res) => {
       eventId,
       viewerId,
     });
-
+if(ticketData.availableSeats>ticketCount){
     await newTicket.save()
       .then(data => {
+        tickStatus=true
         return res.json({
           status: 200,
           msg: 'Ticket created successfully',
@@ -31,6 +35,14 @@ const createTicket = async (req, res) => {
           data: err,
         });
       });
+    }else{
+      return res.json({
+        status: 500,
+        msg: 'Not Enough Available Seats',
+      
+      });
+    }
+  
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -84,8 +96,13 @@ const viewTicketById = (req, res) => {
 };
 
 // View ticket by ID
-const updatePayment = (req, res) => {
-    Ticket.findByIdAndUpdate({ _id: req.params.id},{
+const updatePayment =async (req, res) => {
+  const ticket=await Ticket.findById(req.params.id)
+  console.log("ticket",ticket);
+  const ticketData=await ticketSchema.findById(ticket.ticketId)
+  console.log("ticket 2",ticketData);
+
+   await Ticket.findByIdAndUpdate({ _id: req.params.id},{
         paymentStatus:true
     })
       .exec()
@@ -103,6 +120,9 @@ const updatePayment = (req, res) => {
           Error: err,
         });
       });
+    
+      ticketData.availableSeats -= ticket.ticketCount;
+      await ticketData.save();      
   };
 // View ticket by ID
 const viewTicketByViwerId = (req, res) => {

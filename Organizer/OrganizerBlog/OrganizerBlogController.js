@@ -116,11 +116,38 @@ const viewOrganizerBlogById = (req, res) => {
 };
 
 
+
+// View all OrganizerBlogs
+const viewAllBlogs = (req, res) => {
+    OrganizerBlog.find({}).populate('organizerId')
+        .exec()
+        .then(data => {
+            if (data.length > 0) {
+                res.json({
+                    status: 200,
+                    msg: "Data obtained successfully",
+                    data: data
+                });
+            } else {
+                res.json({
+                    status: 200,
+                    msg: "No Data obtained"
+                });
+            }
+        })
+        .catch(err => {
+            res.status(500).json({
+                status: 500,
+                msg: "Data not obtained",
+                Error: err
+            });
+        });
+};
 module.exports = {
     registerOrganizerBlog,
     viewOrganizerBlogs,
     viewOrganizerBlogById,
-    
+    viewAllBlogs,
     uploads,
 };
 

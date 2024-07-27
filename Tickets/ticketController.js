@@ -43,7 +43,7 @@ const registerTicket = async (req, res) => {
 
 // View all tickets
 const viewTickets = (req, res) => {
-  Ticket.find()
+  Ticket.find().populate('eventId')
     .exec()
     .then(data => {
       if (data.length > 0) {

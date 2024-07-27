@@ -43,7 +43,7 @@ router.post('/viewTeamMemberById/:id',Tm.viewTeamMemberById)
 router.post('/addEnquiry',Enquiry.addEnquiry);
 // router.post('/viewEnquiryById/:id',Enquiry.viewEnquiryById);
 router.post('/viewallEnquiries',Enquiry.viewEnquiries);
-router.post('/deleteEnquiryById',Enquiry.deleteEnquiryById);
+router.post('/deleteEnquiryById/:id',Enquiry.deleteEnquiryById);
 
 router.post('/registerOrganizer',Organizer.upload,Organizer.registerOrganizer);
 router.post('/viewOrganizerReqsForAdmin',Organizer.viewOrganizerReqsForAdmin);
@@ -124,6 +124,7 @@ router.post('/updatePositions/:id',EventEnrollments.updatePositions);
 router.post('/registerOrganizerBlog',OrganizerBlog.uploads,OrganizerBlog.registerOrganizerBlog);
 router.post('/viewOrganizerBlogById/:id',OrganizerBlog.viewOrganizerBlogById);
 router.post('/viewOrganizerBlogs/:id',OrganizerBlog.viewOrganizerBlogs);
+router.post('/viewAllBlogs',OrganizerBlog.viewAllBlogs);
 
 
 
