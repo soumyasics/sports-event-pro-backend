@@ -34,7 +34,7 @@ const addReview = (req, res) => {
 
 const viewAllreviewsByeventId = (req, res) => {
   reviewSchema.find({eventId:req.params.id})
-    .populate('eventId')
+    .populate('eventId tcId viewerId')
    
     .populate('tcId')
   .exec().
