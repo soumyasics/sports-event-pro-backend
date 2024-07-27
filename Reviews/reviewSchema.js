@@ -16,12 +16,20 @@ const rSchema = new Schema(
               type: Date,
               required: true,
             },
-        
+            viewerId:{
+              type: mongoose.Schema.Types.ObjectId,
+              ref: "viewers"
+            
+            },
         review: {
             type: String,
             required:true
 
-        }
+        },
+        userRole: {
+          type: String,
+
+      }
         ,
         rating: {
           type: Number,

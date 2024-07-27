@@ -6,7 +6,8 @@ const addReview = (req, res) => {
   const complaint1 = new reviewSchema({
     eventId: req.body.eventId,
       tcId:req.body.tcId,
-     
+      viewerId:req.body.viewerId,
+      userRole:req.body.userRole,
       review:req.body.review,
       date:new Date()
 
