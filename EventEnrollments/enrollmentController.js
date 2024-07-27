@@ -303,7 +303,6 @@ console.log("in".scoreboards);
 
 
 
-
 module.exports = {
   registerEnrollment,
   viewEnrollments,

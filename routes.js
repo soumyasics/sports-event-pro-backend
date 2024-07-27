@@ -86,6 +86,7 @@ router.post('/rejectEventById/:id',OrgEvents.rejectEventById);
 router.post('/approveEventById/:id',OrgEvents.approveEventById);
 router.post('/viewEventById/:id',OrgEvents.viewEventById);
 router.post('/viewApprovedEventsByOrgId/:id',OrgEvents.viewApprovedEventsByOrgId);
+router.post('/viewPastEvents',OrgEvents.viewPastEvents);
 
 router.post('/viewApprovedEvents',OrgEvents.viewApprovedEvents);
 router.post('/addRating/:id',OrgEvents.addRating);

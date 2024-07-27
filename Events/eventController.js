@@ -326,7 +326,35 @@ const addRating = (req, res) => {
 };
 
 
+// View all past events
+const viewPastEvents = (req, res) => {
+  const currentDate = new Date();
 
+  Event.find({ date: { $lt: currentDate }, adminApprved: 'Approved' }).populate('organizerId')
+    .exec()
+    .then(data => {
+      if (data.length > 0) {
+        console.log(data);
+        res.json({
+          status: 200,
+          msg: 'Past events obtained successfully',
+          data: data,
+        });
+      } else {
+        res.json({
+          status: 200,
+          msg: 'No past events found',
+        });
+      }
+    })
+    .catch(err => {
+      res.status(500).json({
+        status: 500,
+        msg: 'Data not obtained',
+        Error: err,
+      });
+    });
+};
 
 
 
@@ -344,5 +372,6 @@ module.exports = {
   rejectEventById,
   viewApprovedEvents,
   addRating,
-  viewApprovedEventsByOrgId
+  viewApprovedEventsByOrgId,
+  viewPastEvents
 };
