@@ -97,7 +97,8 @@ const viewTicketsByEventId = (req, res) => {
 
 // View tickets by organizer ID
 const viewTicketsByOrganizerId = (req, res) => {
-  Ticket.find({ organizerId: req.params.id })
+  console.log("orgId",req.params.organizerId);
+  Ticket.find({ organizerId: req.params.organizerId }).populate('eventId')
     .exec()
     .then(data => {
       if (data.length > 0) {
@@ -314,5 +315,5 @@ module.exports = {
   viewTicketById,
   deleteTicketById,
   viewApprovedEventsByOrgIdWithoutTickets,
-  getValidTickets
+  getValidTickets,
 };

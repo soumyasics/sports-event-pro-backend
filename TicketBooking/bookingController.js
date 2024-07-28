@@ -184,6 +184,132 @@ const deleteTicketById = (req, res) => {
     });
 };
 
+// View tickets by event ID
+const viewTicketsByTicketId = (req, res) => {
+  Ticket.find({ ticketId: req.params.id,paymentStatus:true }).populate('viewerId')
+    .exec()
+    .then(data => {
+      if (data.length > 0) {
+        res.json({
+          status: 200,
+          msg: 'Data obtained successfully',
+          data: data,
+        });
+      } else {
+        res.json({
+          status: 200,
+          msg: 'No data obtained',
+        });
+      }
+    })
+    .catch(err => {
+      res.status(500).json({
+        status: 500,
+        msg: 'Data not obtained',
+        Error: err,
+      });
+    });
+};
+
+// Function to get sold-out tickets count and total amount by eventId, grouped by eventId
+const getSoldOutTicketsAndTotalAmountByEvent = async (req, res) => {
+  const organizerId = req.params.id;
+
+  try {
+    // Find all tickets associated with the given organizer
+    const tickets = await ticketSchema.find({ organizerId: organizerId });
+
+    if (!tickets.length) {
+      return res.json({
+        status: 200,
+        msg: 'No tickets found for this organizer',
+        data: []
+      });
+    }
+
+    // Extract ticket IDs and event IDs
+    const ticketIds = tickets.map(ticket => ticket._id);
+    const eventIds = tickets.map(ticket => ticket.eventId);
+
+    // Aggregate total amount and count of sold-out tickets by eventId
+    const result = await Ticket.aggregate([
+      { $match: { ticketId: { $in: ticketIds }, paymentStatus: true } },
+      { $group: { _id: "$eventId", totalAmount: { $sum: "$amount" } } }
+    ]);
+
+    // Prepare result by eventId
+    const ticketsDataByEvent = tickets.reduce((acc, ticket) => {
+      const eventId = ticket.eventId.toString();
+      if (!acc[eventId]) {
+        acc[eventId] = { soldOutTicketsCount: 0, totalAmount: 0 };
+      }
+      if (ticket.availableSeats === 0) {
+        acc[eventId].soldOutTicketsCount += 1;
+      }
+      return acc;
+    }, {});
+
+    result.forEach(entry => {
+      const eventId = entry._id.toString();
+      if (ticketsDataByEvent[eventId]) {
+        ticketsDataByEvent[eventId].totalAmount = entry.totalAmount;
+      }
+    });
+
+    res.json({
+      status: 200,
+      msg: 'Data obtained successfully',
+      data: ticketsDataByEvent
+    });
+  } catch (err) {
+    res.status(500).json({
+      status: 500,
+      msg: 'Data not obtained',
+      error: err.message
+    });
+  }
+};
+const getTotalAmountAndSoldTicketsByTicketId = async (req, res) => {
+  const ticketId = req.params.id;
+
+  try {
+    // Aggregate total amount and count of sold tickets
+    const result = await Ticket.aggregate([
+      { $match: { ticketId: mongoose.Types.ObjectId(ticketId), paymentStatus: true } },
+      {
+        $group: {
+          _id: "$ticketId",
+          totalAmount: { $sum: "$amount" },
+          soldTicketsCount: { $sum: "$ticketCount" }
+        }
+      }
+    ]);
+
+    // Check if result is empty
+    if (result.length > 0) {
+      res.json({
+        status: 200,
+        msg: 'Data obtained successfully',
+        data: result[0]
+      });
+    } else {
+      res.json({
+        status: 200,
+        msg: 'No data obtained for the provided ticketId',
+        data: {
+          totalAmount: 0,
+          soldTicketsCount: 0
+        }
+      });
+    }
+  } catch (err) {
+    res.status(500).json({
+      status: 500,
+      msg: 'Data not obtained',
+      error: err.message
+    });
+  }
+};
 
 module.exports = {
   createTicket,
@@ -192,5 +318,8 @@ module.exports = {
   deleteTicketById,
   viewTicketByEventId,
   viewTicketByViwerId,
-  updatePayment
+  updatePayment,
+  viewTicketsByTicketId,
+  getSoldOutTicketsAndTotalAmountByEvent,
+  getTotalAmountAndSoldTicketsByTicketId
 };

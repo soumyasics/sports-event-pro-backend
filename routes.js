@@ -12,7 +12,8 @@ const reviews=require("./Reviews/reviewController")
 const OrganizerBlog=require("./Organizer/OrganizerBlog/OrganizerBlogController")
 const complaints=require('./complaints/complaintController')
 const ticketController=require('./Tickets/ticketController')
-const tickeetbookings=require('./TicketBooking/bookingController')
+const tickeetbookings=require('./TicketBooking/bookingController');
+const eventSchema = require("./Events/eventSchema");
 
 
 //team coach routes
@@ -87,12 +88,15 @@ router.post('/approveEventById/:id',OrgEvents.approveEventById);
 router.post('/viewEventById/:id',OrgEvents.viewEventById);
 router.post('/viewApprovedEventsByOrgId/:id',OrgEvents.viewApprovedEventsByOrgId);
 router.post('/viewPastEvents',OrgEvents.viewPastEvents);
+router.post('/viewApprovedEventsByOrgIdforScoreBoard/:id',OrgEvents.viewApprovedEventsByOrgIdforScoreBoard);
 
 router.post('/viewApprovedEvents',OrgEvents.viewApprovedEvents);
+
 router.post('/addRating/:id',OrgEvents.addRating);
 router.post('/addReview',reviews.addReview);
 router.post('/viewAllreviewsByeventId/:id',reviews.viewAllreviewsByeventId);
 router.post('/viewAllreviews',reviews.viewAllreviews);
+
 
 
 //team members
@@ -114,9 +118,13 @@ router.post('/viewEnrollmentsByOrganizerId/:id',EventEnrollments.viewPendingEnro
 router.post('/viewApprovedEnrollmentsByTcId/:id',EventEnrollments.viewApprovedEnrollmentsByTcId);
 router.post('/viewPAprvdEnrollmentsByOrganizerId/:id',EventEnrollments.viewPAprvdEnrollmentsByOrganizerId);
 router.post('/viewApprovedEnrollmentsByEventId/:id',EventEnrollments.viewApprovedEnrollmentsByEventId);
+router.post('/viewPAprvdEnrollments',EventEnrollments.viewPAprvdEnrollments);
+router.post('/getEventsByOrg/:id',EventEnrollments.getEventsByOrg);
+router.post('/viewPAprvdEnrollmentsForHome',OrgEvents.viewPAprvdEnrollmentsForHome);
 
 router.post('/addScoreByEnrollmentById/:id',EventEnrollments.addScoreByEnrollmentById);
 router.post('/updatePositions/:id',EventEnrollments.updatePositions);
+router.post('/viewEnrollmentwithScore',EventEnrollments.viewEnrollmentwithScore);
 
 
 
@@ -157,6 +165,8 @@ router.post('/viewTicketBookingById/:id', tickeetbookings.viewTicketById);
 router.post('/viewTicketBookingByEventId/:id', tickeetbookings.viewTicketByEventId);
 router.post('/viewTicketBookingByViwerId/:id', tickeetbookings.viewTicketByViwerId);
 router.post('/updatePayment/:id', tickeetbookings.updatePayment);
+router.post('/viewTicketsByTicketId/:id', tickeetbookings.viewTicketsByTicketId);
+router.post('/getTotalAmountAndSoldTicketsByTicketId/:id', tickeetbookings.getTotalAmountAndSoldTicketsByTicketId);
 
 
 module.exports=router
