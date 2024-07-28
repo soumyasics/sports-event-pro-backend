@@ -144,6 +144,34 @@ const viewApprovedEventsByOrgId = (req, res) => {
     });
 };
 
+
+// View all approved events
+const viewApprovedEventsByOrgIdforScoreBoard = (req, res) => {
+  Event.find({adminApprved:'Approved',organizerId:req.params.id,date:{$lte:new Date()}}).populate('organizerId')
+    .exec()
+    .then(data => {
+      if (data.length > 0) {
+        console.log(data);
+        res.json({
+          status: 200,
+          msg: 'Data obtained successfully',
+          data: data,
+        });
+      } else {
+        res.json({
+          status: 200,
+          msg: 'No data obtained',
+        });
+      }
+    })
+    .catch(err => {
+      res.status(500).json({
+        status: 500,
+        msg: 'Data not obtained',
+        Error: err,
+      });
+    });
+};
 // Update event by ID
 const editEventById = async (req, res) => {
   const { organizerId, name, venue, date, time, category } = req.body;
@@ -356,7 +384,25 @@ const viewPastEvents = (req, res) => {
     });
 };
 
-
+const viewPAprvdEnrollmentsForHome = (req, res) => {
+  Event.find({ adminApprved:'Approved',date:{$gt:new Date()} }).limit(4).sort({date:-1})
+    .exec()
+    .then(data => {
+      console.log(data);
+      res.json({
+        status: 200,
+        msg: 'Data obtained successfully',
+        data: data,
+      });
+    })
+    .catch(err => {
+      res.status(500).json({
+        status: 500,
+        msg: 'No data obtained',
+        Error: err,
+      });
+    });
+};
 
 
 module.exports = {
@@ -372,6 +418,8 @@ module.exports = {
   rejectEventById,
   viewApprovedEvents,
   addRating,
+  viewPAprvdEnrollmentsForHome,
   viewApprovedEventsByOrgId,
+  viewApprovedEventsByOrgIdforScoreBoard,
   viewPastEvents
 };

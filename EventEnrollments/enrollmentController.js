@@ -103,6 +103,34 @@ const viewEnrollmentById = (req, res) => {
     });
 };
 
+// View event enrollment by ID
+const viewEnrollmentwithScore = (req, res) => {
+  EventEnrollment.find({score:{$gt:0} }).populate('coachId eventId')
+    .exec()
+    .then(data => {
+      if(data.length>0)
+      res.json({
+        status: 200,
+        msg: 'Data obtained successfully',
+        data: data[0],
+      });
+      else{
+        res.json({
+          status: 400,
+          msg: 'Data obtained successfully',
+          data:null,
+        });
+      }
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).json({
+        status: 500,
+        msg: 'No data obtained',
+        Error: err,
+      });
+    });
+};
 // View event enrollments by Organizer ID
 const viewPendingEnrollmentsByOrganizerId = (req, res) => {
   EventEnrollment.find({ organizerId: req.params.id,approvalStatus:'pending' }).populate('eventId coachId')
@@ -122,6 +150,7 @@ const viewPendingEnrollmentsByOrganizerId = (req, res) => {
       });
     });
 };
+
 const viewPAprvdEnrollmentsByOrganizerId = (req, res) => {
   EventEnrollment.find({ organizerId: req.params.id,approvalStatus:'approved' }).populate('eventId coachId')
     .exec()
@@ -140,6 +169,27 @@ const viewPAprvdEnrollmentsByOrganizerId = (req, res) => {
       });
     });
 };
+
+
+const viewPAprvdEnrollments = (req, res) => {
+  EventEnrollment.find({ approvalStatus:'approved' }).populate('eventId coachId')
+    .exec()
+    .then(data => {
+      res.json({
+        status: 200,
+        msg: 'Data obtained successfully',
+        data: data,
+      });
+    })
+    .catch(err => {
+      res.status(500).json({
+        status: 500,
+        msg: 'No data obtained',
+        Error: err,
+      });
+    });
+};
+
 // Delete event enrollment by ID
 const deleteEnrollmentById = (req, res) => {
   EventEnrollment.findByIdAndDelete({ _id: req.params.id })
@@ -201,10 +251,12 @@ const rejectEnrollmentById = (req, res) => {
 };
 
 const viewApprovedEnrollmentsByTcId = (req, res) => {
+  console.log("in api");
   EventEnrollment.find({ coachId: req.params.id ,approvalStatus:'approved'})
   .populate('eventId organizerId')
     .exec()
     .then(data => {
+      console.log(data);
       res.json({
         status: 200,
         msg: 'Data obtained successfully',
@@ -301,6 +353,50 @@ console.log("in".scoreboards);
      })  }
 };
 
+const getEventsByOrg=async (req, res) => {
+  try {
+      const { id } = req.params;
+
+      const events = await eventSchema.find({ organizerId: req.params.id });
+
+      const eventIds = events.map(event => event._id);
+
+      const enrollments = await EventEnrollment.aggregate([
+          { $match: { eventId: { $in: eventIds } } },
+          {
+              $group: {
+                  _id: '$eventId',
+                  totalEnrollments: { $sum: 1 }
+              }
+          },
+          {
+              $lookup: {
+                  from: 'events',
+                  localField: '_id',
+                  foreignField: '_id',
+                  as: 'event'
+              }
+          },
+          {
+              $unwind: '$event'
+          },
+          {
+              $project: {
+                  _id: 0,
+                  eventName: '$event.name',
+                  totalEnrollments: 1
+              }
+          }
+      ]);
+      
+      console.log(enrollments);
+      res.json(enrollments);
+  } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Server error' });
+  }
+}
+
 
 
 module.exports = {
@@ -309,14 +405,16 @@ module.exports = {
   
   viewEnrollmentById,
   deleteEnrollmentById,
-
+  viewPAprvdEnrollments,
   viewPendingEnrollmentsByOrganizerId,
   approveEnrollmentById,
   rejectEnrollmentById,
   viewApprovedEnrollmentsByTcId,
 viewPAprvdEnrollmentsByOrganizerId,
 viewApprovedEnrollmentsByEventId,
+getEventsByOrg,
 
   addScoreByEnrollmentById,
-  updatePositions
+  updatePositions,
+  viewEnrollmentwithScore
 };
