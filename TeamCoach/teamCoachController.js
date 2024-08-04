@@ -375,7 +375,7 @@ const resetPassword = async (req, res) => {
                 pwdMatch = true;
         })
         .catch(err => {
-            res.status(500).json({
+           return res.status(500).json({
                 status: 500,
                 msg: "Data not Updated",
                 Error: err

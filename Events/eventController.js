@@ -226,7 +226,7 @@ const viewEventById = (req, res) => {
 
 // View event by ID
 const viewEventByOrganizerId = (req, res) => {
-  Event.find({organizerId: req.params.id })
+  Event.find({organizerId: req.params.id }).sort({date:-1})
     .exec()
     .then(data => {
       res.json({
@@ -384,8 +384,69 @@ const viewPastEvents = (req, res) => {
     });
 };
 
+
+// View all past events
+const viewUpcomingEvents = (req, res) => {
+  const currentDate = new Date();
+
+  Event.find({ date: { $gte: currentDate }, adminApprved: 'Approved' }).populate('organizerId')
+    .exec()
+    .then(data => {
+      if (data.length > 0) {
+        console.log(data);
+        res.json({
+          status: 200,
+          msg: 'Past events obtained successfully',
+          data: data,
+        });
+      } else {
+        res.json({
+          status: 200,
+          msg: 'No past events found',
+        });
+      }
+    })
+    .catch(err => {
+      res.status(500).json({
+        status: 500,
+        msg: 'Data not obtained',
+        Error: err,
+      });
+    });
+};
+
+
+// View all past events
+const viewUpcomingEventsforTC = (req, res) => {
+  const currentDate = new Date();
+
+  Event.find({ date: { $gte: currentDate }, adminApprved: 'Approved' }).populate('organizerId')
+    .exec()
+    .then(data => {
+      if (data.length > 0) {
+        console.log(data);
+        res.json({
+          status: 200,
+          msg: 'Past events obtained successfully',
+          data: data,
+        });
+      } else {
+        res.json({
+          status: 200,
+          msg: 'No past events found',
+        });
+      }
+    })
+    .catch(err => {
+      res.status(500).json({
+        status: 500,
+        msg: 'Data not obtained',
+        Error: err,
+      });
+    });
+};
 const viewPAprvdEnrollmentsForHome = (req, res) => {
-  Event.find({ adminApprved:'Approved',date:{$gt:new Date()} }).limit(4).sort({date:-1})
+  Event.find({ adminApprved:'Approved',date:{$gt:new Date()} }).limit(3).sort({date:-1}).limit(5).sort({date:-1})
     .exec()
     .then(data => {
       console.log(data);
@@ -421,5 +482,6 @@ module.exports = {
   viewPAprvdEnrollmentsForHome,
   viewApprovedEventsByOrgId,
   viewApprovedEventsByOrgIdforScoreBoard,
-  viewPastEvents
+  viewPastEvents,
+  viewUpcomingEvents
 };

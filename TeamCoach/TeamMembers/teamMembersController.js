@@ -107,18 +107,23 @@ const viewTeamMembers = (req, res) => {
 
 
 const editTeamMembersById = async (req, res) => {
-    let flag = 0
+    console.log("data",req.body);
+    
+//     let flag = 0
     const { name, contact, email, state,city,address ,pincode,category} = req.body;
-    let existingTeamMembers = await TeamMember.find({ contact });
-    let TeamMembersData = await TeamMember.findById({ _id: req.params.id });
-    await existingTeamMembers.map(x => {
-        if (x.contact != TeamMembersData.contact) {
-            flag = 1
-        }
+//     console.log("file",req.file,req.params.id,req.body);
+    
+//     let existingTeamMembers = await TeamMember.find({ contact });
+//     let TeamMembersData = await TeamMember.findById({ _id: req.params.id });
+//     await existingTeamMembers.map(x => {
+//         if (x.contact != TeamMembersData.contact) {
+//             flag = 1
+//         }
 
-    })
+//     })
+// console.log(flag);
 
-    if (flag == 0) {
+//     if (flag == 0) {
 
         await TeamMember.findByIdAndUpdate({ _id: req.params.id }, {
             name,
@@ -129,7 +134,8 @@ const editTeamMembersById = async (req, res) => {
             city,
             email,
             category,
-            pincode
+            pincode,
+            photo:req.file
           
 
         })
@@ -148,43 +154,18 @@ const editTeamMembersById = async (req, res) => {
                     Error: err
                 });
             });
-    }
-    else {
-        return res.json({
-            status: 409,
-            msg: "contact Number Already Registered With Us !!",
-            data: null
-        });
-    }
+    // }
+    // else {
+    //     console.log("here");
+        
+    //     return res.json({
+    //         status: 409,
+    //         msg: "contact Number Already Registered With Us !!",
+    //         data: null
+    //     });
+    // }
 
 
-    await TeamMember.findByIdAndUpdate({ _id: req.params.id }, {
-        coachId: req.body.coachId,
-        name,
-        contact,
-        email,
-        pincode,
-        category,
-        address,
-        city,
-        state,
-        photo: req.file,
-    })
-        .exec()
-        .then(data => {
-            res.json({
-                status: 200,
-                msg: "Updated successfully"
-            });
-        })
-        .catch(err => {
-            console.log(err);
-            res.status(500).json({
-                status: 500,
-                msg: "Data not Updated",
-                Error: err
-            });
-        });
 };
 
 const viewTeamMemberById = (req, res) => {
@@ -293,7 +274,63 @@ const requireAuth = (req, res, next) => {
         next();
     });
 };
+const checkData=async(req,res)=>{
+    console.log("data",req.file);
+    console.log("data",req.body);
+    let flag=0
+    const { name, contact, email, state,city,address ,pincode,category} = req.body;
+    let existingTeamMembers = await TeamMember.find({ contact });
+        let TeamMembersData = await TeamMember.findById({ _id: req.params.id });
+        await existingTeamMembers.map(x => {
+            if (x.contact != TeamMembersData.contact) {
+                flag = 1
+            }
+    
+        })
+    console.log(flag);
+    
+        if (flag == 0) {
+    
+    await TeamMember.findByIdAndUpdate({ _id: req.params.id }, {
+        name,
+        state,
+        contact,
+        address,
+        pincode,
+        city,
+        email,
+        category,
+        pincode,
+        photo:req.file
+      
 
+    })
+        .exec()
+        .then(data => {
+            res.json({
+                status: 200,
+                msg: "Updated successfully"
+            });
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(500).json({
+                status: 500,
+                msg: "Data not Updated",
+                Error: err
+            });
+        });
+            }
+    else {
+        console.log("here");
+        
+        return res.json({
+            status: 409,
+            msg: "contact Number Already Registered With Us !!",
+            data: null
+        });
+    }
+}
 module.exports = {
     registerTeamMember,
     // ViewAllTeamMembers,
@@ -302,5 +339,6 @@ module.exports = {
     viewTeamMemberById,
     viewTeamMembers,
     deleteTeamMemberById,
-    upload
+    upload,
+    checkData
 };

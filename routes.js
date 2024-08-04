@@ -29,14 +29,16 @@ router.post('/rejectTeamCoachById/:id',Tc.rejectTeamCoachById)
 router.post('/activateTeamCoachById/:id',Tc.activateTeamCoachById)
 router.post('/deActivateTeamCoachById/:id',Tc.deActivateTeamCoachById)
 router.post('/forgotPassword',Tc.forgotPassword)
+router.post('/resetPasswordforTc/:id',Tc.resetPassword)
 
 //team members
-router.post('/addTeamMembers/:id',Tm.registerTeamMember)
+router.post('/addTeamMembers/:id',Tm.upload,Tm.registerTeamMember)
 router.post('/ViewAllTeamMembers',Tm.viewTeamMembers)
-// router.post('/editTeamMembersById/:id',Tm.editTeamMembersById)
+router.post('/editTeamMembersById/:id',Tm.upload,Tm.editTeamMembersById)
 router.post('/deleteTeamMemberById/:id',Tm.deleteTeamMemberById)
 router.post('/viewTeamMemberByCoachId/:id',Tm.viewTeamMemberByCoachId)
 router.post('/viewTeamMemberById/:id',Tm.viewTeamMemberById)
+router.post('/checkData/:id',Tm.upload,Tm.checkData)
 
 
 
@@ -58,6 +60,7 @@ router.post('/deActivateOrganizerById/:id',Organizer.deActivateOrganizerById);
 router.post('/viewOrganizers',Organizer.viewOrganizers);
 router.post('/forgotPasswordOrganizer',Organizer.forgotPassword);
 
+router.post('/resetPasswordOrganizer/:id',Organizer.resetPassword);
 
 
 
@@ -78,6 +81,7 @@ router.post('/editviewersById/:id',viewers.editviewersById);
 router.post('/activateviewersById/:id',viewers.activateviewersById);
 router.post('/deActivateviewersById/:id',viewers.deActivateviewersById);
 router.post('/forgotPasswordViewer',viewers.forgotPassword);
+router.post('/resetPassword/:id',viewers.resetPassword);
 
 //events
 router.post('/addEvent',OrgEvents.upload,OrgEvents.registerEvent);
@@ -91,6 +95,7 @@ router.post('/viewPastEvents',OrgEvents.viewPastEvents);
 router.post('/viewApprovedEventsByOrgIdforScoreBoard/:id',OrgEvents.viewApprovedEventsByOrgIdforScoreBoard);
 
 router.post('/viewApprovedEvents',OrgEvents.viewApprovedEvents);
+router.post('/viewUpcomingEvents',OrgEvents.viewUpcomingEvents);
 
 router.post('/addRating/:id',OrgEvents.addRating);
 router.post('/addReview',reviews.addReview);
@@ -99,12 +104,6 @@ router.post('/viewAllreviews',reviews.viewAllreviews);
 
 
 
-//team members
-router.post('/registerTeamMember/:id',Tm.upload,Tm.registerTeamMember)
-router.post('/viewTeamMemberByCoachId/:id',Tm.viewTeamMemberByCoachId)
-router.post('/viewTeamMemberById/:id',Tm.viewTeamMemberById)
-router.post('/editTeamMemberById/:id',Tm.editTeamMembersById)
-router.post('/deleteTeamMemberById/:id',Tm.deleteTeamMemberById)
 
 
 //enrollments
@@ -133,6 +132,8 @@ router.post('/registerOrganizerBlog',OrganizerBlog.uploads,OrganizerBlog.registe
 router.post('/viewOrganizerBlogById/:id',OrganizerBlog.viewOrganizerBlogById);
 router.post('/viewOrganizerBlogs/:id',OrganizerBlog.viewOrganizerBlogs);
 router.post('/viewAllBlogs',OrganizerBlog.viewAllBlogs);
+router.post('/updateOrganizerBlogById/:id',OrganizerBlog.uploads,OrganizerBlog.updateOrganizerBlogById);
+router.post('/deleteOrganizerBlogById/:id',OrganizerBlog.deleteOrganizerBlogById);
 
 
 

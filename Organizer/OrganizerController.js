@@ -358,7 +358,7 @@ const resetPassword = async (req, res) => {
                 pwdMatch = true;
         })
         .catch(err => {
-            res.status(500).json({
+            return  res.status(500).json({
                 status: 500,
                 msg: "Data not Updated",
                 Error: err
@@ -372,25 +372,25 @@ const resetPassword = async (req, res) => {
             .exec()
             .then(data => {
                 if (data != null)
-                    res.json({
+                    return  res.json({
                         status: 200,
                         msg: "Updated successfully"
                     });
                 else
-                    res.json({
+                return  res.json({
                         status: 500,
                         msg: "User Not Found"
                     });
             })
             .catch(err => {
-                res.status(500).json({
+                return  res.status(500).json({
                     status: 500,
                     msg: "Data not Updated",
                     Error: err
                 });
             });
     } else {
-        res.json({
+       return res.json({
             status: 405,
             msg: "Your Old Password doesn't match"
         });
@@ -475,5 +475,6 @@ module.exports = {
     viewOrganizerReqsByAdmin,
     viewOrganizers,
     forgotPassword,
-    uploadSingle
+    uploadSingle,
+    resetPassword
 }
