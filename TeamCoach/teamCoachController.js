@@ -381,10 +381,11 @@ const resetPassword = async (req, res) => {
                 Error: err
             });
         });
+console.log(pwdMatch);
 
     if (pwdMatch) {
         await TeamCoach.findByIdAndUpdate({ _id: req.params.id }, {
-            password: req.body.newpassword
+            password: req.body.password
         })
             .exec()
             .then(data => {

@@ -367,7 +367,7 @@ const resetPassword = async (req, res) => {
 
     if (pwdMatch) {
         await Organizer.findByIdAndUpdate({ _id: req.params.id }, {
-            password: req.body.newpassword
+            password: req.body.password
         })
             .exec()
             .then(data => {

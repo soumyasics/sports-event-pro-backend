@@ -297,7 +297,8 @@ const forgotPassword = (req, res) => {
 // Forgot Password for viewers
 const resetPassword = async(req, res) => {
     let pwdMatch = false;
-    
+    console.log("daya",req.body.password);
+
     await viewers.findById({ _id: req.params.id })
         .exec()
         .then(data => {
@@ -311,6 +312,7 @@ const resetPassword = async(req, res) => {
                 Error: err
             });
         });
+console.log("daya",req.body.password);
 
     if (pwdMatch) {
         await viewers.findByIdAndUpdate({ _id: req.params.id }, {

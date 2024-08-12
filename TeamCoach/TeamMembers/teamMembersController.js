@@ -2,6 +2,7 @@ const TeamMember = require('./teamMembersSchema'); // Adjust the path according 
 const jwt = require('jsonwebtoken');
 const multer = require("multer");
 const teamCoachSchema = require('../teamCoachSchema');
+const teamPlayers = require('./teamPlayers');
 
 const secret = 'TeamMember'; // Replace this with your own secret key
 
@@ -331,6 +332,100 @@ const checkData=async(req,res)=>{
         });
     }
 }
+
+const addTeamMembertoEvent = async (req, res) => {
+    try {
+let count=0
+   
+        const { eventId, coachId } = req.body;
+
+        let coachData= await teamCoachSchema.findById(coachId)
+        let teams= await teamPlayers.find({eventId:eventId})
+ let teamCount=teams.length?teams.length:0
+ let category=coachData.category
+
+ switch(category){
+case 'cricket':count=11
+                break
+case 'football':count=12
+                break
+  case 'tennis':count=4
+                break
+  case 'badminton':count=4
+                break
+   case 'badminton':count=11
+                break
+ }
+
+        const newTeamMember = new teamPlayers({
+            eventId,
+            coachId,
+            memberId:req.params.id,
+           
+        });
+
+        let existingTeamMember = await teamPlayers.findOne({ eventId:eventId,memberId:req.params.id });
+        if (existingTeamMember) {
+            return res.json({
+                status: 409,
+                msg: "The member Has Been Already Added !!",
+                data: null
+            });
+        }
+        console.log(teamCount);
+        if (teamCount==count) {
+            return res.json({
+                status: 409,
+                msg: `You have Already Added ${count} Members !!`,
+                data: null
+            });
+        }
+        await newTeamMember.save()
+            .then(data => {
+                return res.json({
+                    status: 200,
+                    msg: "Inserted successfully",
+                    data: data
+                });
+            })
+            .catch(err => {
+                console.log(err);
+                return res.json({
+                    status: 500,
+                    msg: "Data not Inserted",
+                    data: err
+                });
+            });
+    } catch (error) {
+        console.log(error);
+        
+        res.status(500).json({ message: error.message });
+    }
+};
+
+const viewTeamMemberByCoachEventId = (req, res) => {
+    console.log("data");
+    
+    teamPlayers.find({ coachId: req.params.cId,eventId:req.params.eventId })
+        .populate('memberId')
+        .exec()
+        .then(data => {
+            res.json({
+                status: 200,
+                msg: "Data obtained successfully",
+                data: data
+            });
+        })
+        .catch(err => {
+            res.status(500).json({
+                status: 500,
+                msg: "No Data obtained",
+                Error: err
+            });
+        });
+};
+
+
 module.exports = {
     registerTeamMember,
     // ViewAllTeamMembers,
@@ -340,5 +435,7 @@ module.exports = {
     viewTeamMembers,
     deleteTeamMemberById,
     upload,
-    checkData
+    checkData,
+    addTeamMembertoEvent,
+    viewTeamMemberByCoachEventId
 };

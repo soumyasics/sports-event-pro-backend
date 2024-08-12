@@ -1,7 +1,12 @@
 const Event = require('./eventSchema');
 const jwt = require('jsonwebtoken');
 const multer = require('multer');
+const teamCoachSchema = require('../TeamCoach/teamCoachSchema');
+const Ticket = require('../TicketBooking/bookibgSchema');
+const mongoose=require('mongoose');
+const ticketSchema = require('../Tickets/ticketSchema');
 
+const eventSchema = require('./eventSchema');
 const secret = 'eventsSecretKey'; // Replace this with your own secret key
 
 // Multer setup for file uploads
@@ -30,7 +35,7 @@ const registerEvent = async (req, res) => {
       venue,
       date,
       time,
-      category,
+      category:category.toLowerCase(),
       banner: req.file,
     });
 
@@ -184,7 +189,7 @@ const editEventById = async (req, res) => {
       venue,
       date,
       time,
-      category,
+      category:category.toLowerCase(),
       banner: req.file,
     }
   )
@@ -389,7 +394,7 @@ const viewPastEvents = (req, res) => {
 const viewUpcomingEvents = (req, res) => {
   const currentDate = new Date();
 
-  Event.find({ date: { $gte: currentDate }, adminApprved: 'Approved' }).populate('organizerId')
+  Event.find({ date: { $gte: currentDate }, adminApprved: 'Approved' }).populate('organizerId').sort({date:-1})
     .exec()
     .then(data => {
       if (data.length > 0) {
@@ -417,14 +422,17 @@ const viewUpcomingEvents = (req, res) => {
 
 
 // View all past events
-const viewUpcomingEventsforTC = (req, res) => {
+const viewUpcomingEventsforTC =async (req, res) => {
   const currentDate = new Date();
+  
+let coachData=await teamCoachSchema.findById(req.params.id)
+console.log("cate",coachData.category);
 
-  Event.find({ date: { $gte: currentDate }, adminApprved: 'Approved' }).populate('organizerId')
+ await Event.find({ adminApprved:'Approved',date:{$gt:new Date()},category:coachData.category }).sort({date:-1}).limit(4).sort({date:-1})
     .exec()
     .then(data => {
       if (data.length > 0) {
-        console.log(data);
+        console.log( "datasss",data.length);
         res.json({
           status: 200,
           msg: 'Past events obtained successfully',
@@ -445,8 +453,9 @@ const viewUpcomingEventsforTC = (req, res) => {
       });
     });
 };
+
 const viewPAprvdEnrollmentsForHome = (req, res) => {
-  Event.find({ adminApprved:'Approved',date:{$gt:new Date()} }).limit(3).sort({date:-1}).limit(5).sort({date:-1})
+  Event.find({ adminApprved:'Approved',date:{$gt:new Date()} }).sort({date:-1}).limit(3).sort({date:-1})
     .exec()
     .then(data => {
       console.log(data);
@@ -466,6 +475,68 @@ const viewPAprvdEnrollmentsForHome = (req, res) => {
 };
 
 
+
+
+
+
+async function getViewerSuggestedEvents(viewerId) {
+ 
+  //     return null;
+  // } catch (error) {
+  //     console.error('Error fetching viewer-suggested events:', error);
+  //     throw error;
+  // }
+}
+
+
+
+
+// Get suggestions based on the latest booked event's category
+const getEventSuggestionsForViewer = async (req, res) => {
+  try {
+    let cats=[]
+  let today=new Date()
+   const books=await Ticket.find({viewerId:req.params.id}).sort({createdAt:-1}).limit(3).exec()
+  
+   const eveId=books[0].eventId
+
+console.log(eveId);
+const eve=await eventSchema.findById({_id:eveId}).exec()
+console.log(eve);
+const eves=await eventSchema.find({category:eve.category}).exec().then(data=>{
+  data.map(x=>{
+    cats.push(x._id)
+
+  })
+})
+
+console.log("cats",cats);
+
+const tickets=await ticketSchema.find({
+  startDate: { $lte: today },
+  endDate: { $gte: today },
+  eventId:{$in:cats}
+}).populate('eventId')
+console.log("tickets",tickets);
+const uniqueTickets = Array.from(
+  new Map(tickets.map(ticket => [ticket.eventId.toString(), ticket])).values()
+);
+console.log("uniqueTickets",uniqueTickets);
+res.status(200).json({
+  status: 200,
+  msg: 'event suggestions obtained',
+  data:uniqueTickets
+});
+} catch (error) {
+    console.error('Error fetching viewer-suggested events:', error);
+    res.status(500).json({
+        status: 500,
+        msg: 'An error occurred while fetching event suggestions',
+        error: error.message
+    });
+}
+};
+
 module.exports = {
   registerEvent,
   viewEvents,
@@ -483,5 +554,7 @@ module.exports = {
   viewApprovedEventsByOrgId,
   viewApprovedEventsByOrgIdforScoreBoard,
   viewPastEvents,
-  viewUpcomingEvents
+  viewUpcomingEvents,
+  viewUpcomingEventsforTC,
+  getEventSuggestionsForViewer
 };

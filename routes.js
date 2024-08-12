@@ -39,7 +39,8 @@ router.post('/deleteTeamMemberById/:id',Tm.deleteTeamMemberById)
 router.post('/viewTeamMemberByCoachId/:id',Tm.viewTeamMemberByCoachId)
 router.post('/viewTeamMemberById/:id',Tm.viewTeamMemberById)
 router.post('/checkData/:id',Tm.upload,Tm.checkData)
-
+router.post('/addTeamMembertoEvent/:id',Tm.addTeamMembertoEvent)
+router.post('/viewTeamMemberByCoachEventId/:cId/:eventId',Tm.viewTeamMemberByCoachEventId)
 
 
 //Enquiry routes
@@ -93,9 +94,11 @@ router.post('/viewEventById/:id',OrgEvents.viewEventById);
 router.post('/viewApprovedEventsByOrgId/:id',OrgEvents.viewApprovedEventsByOrgId);
 router.post('/viewPastEvents',OrgEvents.viewPastEvents);
 router.post('/viewApprovedEventsByOrgIdforScoreBoard/:id',OrgEvents.viewApprovedEventsByOrgIdforScoreBoard);
+router.post('/viewUpcomingEventsforTC/:id',OrgEvents.viewUpcomingEventsforTC);
 
 router.post('/viewApprovedEvents',OrgEvents.viewApprovedEvents);
 router.post('/viewUpcomingEvents',OrgEvents.viewUpcomingEvents);
+router.post('/getEventSuggestionsForViewer/:id',OrgEvents.getEventSuggestionsForViewer);
 
 router.post('/addRating/:id',OrgEvents.addRating);
 router.post('/addReview',reviews.addReview);
@@ -120,6 +123,7 @@ router.post('/viewApprovedEnrollmentsByEventId/:id',EventEnrollments.viewApprove
 router.post('/viewPAprvdEnrollments',EventEnrollments.viewPAprvdEnrollments);
 router.post('/getEventsByOrg/:id',EventEnrollments.getEventsByOrg);
 router.post('/viewPAprvdEnrollmentsForHome',OrgEvents.viewPAprvdEnrollmentsForHome);
+router.post('/viewPAprvdEnrollmentsforTicket',EventEnrollments.viewPAprvdEnrollmentsforTicket);
 
 router.post('/addScoreByEnrollmentById/:id',EventEnrollments.addScoreByEnrollmentById);
 router.post('/updatePositions/:id',EventEnrollments.updatePositions);

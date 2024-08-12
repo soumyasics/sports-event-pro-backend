@@ -1,4 +1,5 @@
 const eventSchema = require('../Events/eventSchema');
+const teamCoachSchema = require('../TeamCoach/teamCoachSchema');
 const teamMembersSchema = require('../TeamCoach/TeamMembers/teamMembersSchema');
 const EventEnrollment = require('./enrollmentSchema');
 const jwt = require('jsonwebtoken');
@@ -10,12 +11,29 @@ const registerEnrollment = async (req, res) => {
   try {
     const { coachId } = req.body;
     const eventId=req.params.id
+    console.log("req.params.id",req.params.id,"co",coachId);
+    
 const exEnroll=await EventEnrollment.findOne({coachId,eventId})
 const hasTeam=await teamMembersSchema.findOne({coachId})
+const eventData=await eventSchema.findById({_id:eventId})
+const coachData=await teamCoachSchema.findById({_id:coachId})
+console.log("dd",coachData.category," ",eventData.category);
+if(exEnroll&&exEnroll.approvalStatus=='rejected'){
+  return res.json({
+      status:400,
+      msg:"Your Reqquest Has Been Denied By Organizer !!"
+  })
+}
+if((((eventData.category).toLowerCase()).trim())!=(((coachData.category).toLowerCase()).trim())){
+  return res.json({
+      status:400,
+      msg:`Its a ${eventData.category} Event . You are not Allowed to Enroll for It !`
+  })
+}
 if(!hasTeam){
   return res.json({
       status:400,
-      msg:"Please add your Team menbers and Enroll  !!"
+      msg:"Please add your Team members and Enroll  !!"
   })
 }
 if(exEnroll){
@@ -25,7 +43,6 @@ if(exEnroll){
     })
 }
 
-const eventData=await eventSchema.findById({_id:eventId})
     const newEnrollment = new EventEnrollment({
       coachId,
       eventId,
@@ -189,7 +206,37 @@ const viewPAprvdEnrollments = (req, res) => {
       });
     });
 };
+const viewPAprvdEnrollmentsforTicket =async (req, res) => {
+  const currentDate = new Date();
+  let dat=[]
+  await EventEnrollment.find({ approvalStatus:'approved'}).populate('eventId coachId')
+    .exec()
+    .then(data => {
+      if(data&&data.length>0){
+        data.map(x=>{
+      if(x.eventId.date<currentDate){
+        dat.push(x)
+      }
+        })
+      }
+      console.log(dat);
+      
+      res.json({
+        status: 200,
+        msg: 'Data obtained successfully',
+        data: dat,
+      });
+    })
+    .catch(err => {
+      res.status(500).json({
+        status: 500,
+        msg: 'No data obtained',
+        Error: err,
+      });
+    });
 
+
+}
 // Delete event enrollment by ID
 const deleteEnrollmentById = (req, res) => {
   EventEnrollment.findByIdAndDelete({ _id: req.params.id })
@@ -413,7 +460,7 @@ module.exports = {
 viewPAprvdEnrollmentsByOrganizerId,
 viewApprovedEnrollmentsByEventId,
 getEventsByOrg,
-
+viewPAprvdEnrollmentsforTicket,
   addScoreByEnrollmentById,
   updatePositions,
   viewEnrollmentwithScore
