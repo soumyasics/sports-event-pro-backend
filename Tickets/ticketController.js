@@ -1,6 +1,7 @@
 const Ticket = require('./ticketSchema');
 const Event = require('../Events/eventSchema');
 const Organizer = require('../Organizer/OrganizerSchema');
+const eventSchema = require('../Events/eventSchema');
 
 // Register a new ticket
 const registerTicket = async (req, res) => {
@@ -200,13 +201,12 @@ const viewApprovedEventsByOrgIdWithoutTickets = async (req, res) => {
     try {
       const organizerId = req.params.id;
   
-      // Convert organizerId to ObjectId if necessary
-  
-      // Find all approved events for the given organizer ID
+     
       const approvedEvents = await Event.find({
         adminApprved: 'Approved',
         organizerId: organizerId,
-      }).select('_id'); // Only fetch the event IDs
+        date:{$gt:new Date()}
+      }).select('_id'); 
   
       if (!approvedEvents.length) {
         return res.json({
@@ -303,6 +303,36 @@ const getValidTickets = async (req,res) => {
   }
 
 
+
+  
+  const getValidTicketsforSugg = async (req,res) => {
+
+
+    const eveData=eventSchema.find({ date: { $gte: currentDate }, adminApprved: 'Approved' }).populate('organizerId').sort({date:-1})
+
+    const today = new Date();
+    const tickets = await Ticket.find({
+        startDate: { $lte: today },
+        endDate: { $gte: today }
+    }).populate('eventId')
+    .then(data=>{
+
+
+   res.json({
+    status:200,
+    data:data,
+    msg:'Data obtained'
+   });
+  })
+.catch (error=> {
+    console.error('Error fetching valid tickets:', error);
+    res.json({
+      status:500,
+      err:error,
+      msg:'Data obtained'
+     });
+    })
+}
 
   
   

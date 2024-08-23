@@ -375,16 +375,17 @@ const resetPassword = async (req, res) => {
                 pwdMatch = true;
         })
         .catch(err => {
-            res.status(500).json({
+           return res.status(500).json({
                 status: 500,
                 msg: "Data not Updated",
                 Error: err
             });
         });
+console.log(pwdMatch);
 
     if (pwdMatch) {
         await TeamCoach.findByIdAndUpdate({ _id: req.params.id }, {
-            password: req.body.newpassword
+            password: req.body.password
         })
             .exec()
             .then(data => {

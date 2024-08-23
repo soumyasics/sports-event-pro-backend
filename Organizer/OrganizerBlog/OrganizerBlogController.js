@@ -38,6 +38,8 @@ const registerOrganizerBlog = async (req, res) => {
 
          } = req.body;
 
+         console.log("body",req.body);
+         
         const newOrganizerBlog = new OrganizerBlog({
 
             title,
@@ -46,7 +48,7 @@ const registerOrganizerBlog = async (req, res) => {
             image: req.file,
            
         });
-console.log("req",req.files);
+console.log("req",req.file);
         await newOrganizerBlog.save()
             .then(data => {
                 return res.json({
@@ -71,6 +73,8 @@ console.log("req",req.files);
 
 // View all OrganizerBlogs
 const viewOrganizerBlogs = (req, res) => {
+    console.log("hhere");
+    
     OrganizerBlog.find({organizerId:req.params.id}).populate('organizerId')
         .exec()
         .then(data => {
@@ -88,6 +92,8 @@ const viewOrganizerBlogs = (req, res) => {
             }
         })
         .catch(err => {
+            console.log(err);
+            
             res.status(500).json({
                 status: 500,
                 msg: "Data not obtained",
@@ -98,6 +104,60 @@ const viewOrganizerBlogs = (req, res) => {
 // View OrganizerBlog by ID
 const viewOrganizerBlogById = (req, res) => {
     OrganizerBlog.findById({ _id: req.params.id })
+        .exec()
+        .then(data => {
+            res.json({
+                status: 200,
+                msg: "Data obtained successfully",
+                data: data
+            });
+        })
+        .catch(err => {
+            res.status(500).json({
+                status: 500,
+                msg: "No Data obtained",
+                Error: err
+            });
+        });
+};
+
+
+
+// update OrganizerBlog by ID
+const updateOrganizerBlogById = (req, res) => {
+    const { 
+        title,
+        description,
+       
+
+     } = req.body;
+    OrganizerBlog.findByIdAndUpdate({ _id: req.params.id },
+        {
+            title,
+            description,
+            image: req.file, 
+        }
+    )
+        .exec()
+        .then(data => {
+            res.json({
+                status: 200,
+                msg: "Data obtained successfully",
+                data: data
+            });
+        })
+        .catch(err => {
+            res.status(500).json({
+                status: 500,
+                msg: "No Data obtained",
+                Error: err
+            });
+        });
+};
+
+// View OrganizerBlog by ID
+const deleteOrganizerBlogById = (req, res) => {
+    OrganizerBlog.findByIdAndDelete({ _id: req.params.id })
         .exec()
         .then(data => {
             res.json({
@@ -149,5 +209,7 @@ module.exports = {
     viewOrganizerBlogById,
     viewAllBlogs,
     uploads,
+    deleteOrganizerBlogById,
+    updateOrganizerBlogById
 };
 

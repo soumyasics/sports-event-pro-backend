@@ -294,6 +294,59 @@ const forgotPassword = (req, res) => {
         });
 };
 
+// Forgot Password for viewers
+const resetPassword = async(req, res) => {
+    let pwdMatch = false;
+    console.log("daya",req.body.password);
+
+    await viewers.findById({ _id: req.params.id })
+        .exec()
+        .then(data => {
+            if (data.password === req.body.oldpassword)
+                pwdMatch = true;
+        })
+        .catch(err => {
+            res.status(500).json({
+                status: 500,
+                msg: "Data not Updated",
+                Error: err
+            });
+        });
+console.log("daya",req.body.password);
+
+    if (pwdMatch) {
+        await viewers.findByIdAndUpdate({ _id: req.params.id }, {
+            password: req.body.password
+        })
+            .exec()
+            .then(data => {
+                if (data != null)
+                    res.json({
+                        status: 200,
+                        msg: "Updated successfully"
+                    });
+                else
+                    res.json({
+                        status: 500,
+                        msg: "User Not Found"
+                    });
+            })
+            .catch(err => {
+                res.status(500).json({
+                    status: 500,
+                    msg: "Data not Updated",
+                    Error: err
+                });
+            });
+    } else {
+        res.json({
+            status: 405,
+            msg: "Your Old Password doesn't match"
+        });
+    }
+    
+    
+};
 module.exports = {
     Viewerreg,
     login,
@@ -303,6 +356,7 @@ module.exports = {
     deleteviewersById,
     forgotPassword,
     activateviewersById,
-    deActivateviewersById
+    deActivateviewersById,
+    resetPassword
 
 };
