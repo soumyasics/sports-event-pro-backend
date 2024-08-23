@@ -201,13 +201,12 @@ const viewApprovedEventsByOrgIdWithoutTickets = async (req, res) => {
     try {
       const organizerId = req.params.id;
   
-      // Convert organizerId to ObjectId if necessary
-  
-      // Find all approved events for the given organizer ID
+     
       const approvedEvents = await Event.find({
         adminApprved: 'Approved',
         organizerId: organizerId,
-      }).select('_id'); // Only fetch the event IDs
+        date:{$gt:new Date()}
+      }).select('_id'); 
   
       if (!approvedEvents.length) {
         return res.json({

@@ -428,7 +428,7 @@ const viewUpcomingEventsforTC =async (req, res) => {
 let coachData=await teamCoachSchema.findById(req.params.id)
 console.log("cate",coachData.category);
 
- await Event.find({ adminApprved:'Approved',date:{$gt:new Date()},category:coachData.category }).sort({date:-1}).limit(4).sort({date:-1})
+ await Event.find({ adminApprved:'Approved',date:{$gt:new Date()},category:coachData.category }).limit(4).sort({date:-1})
     .exec()
     .then(data => {
       if (data.length > 0) {
